@@ -2,11 +2,14 @@
   "name": "expo_project",
   "version": "1.0.0",
   "main": "expo-router/entry",
+  "type": "module",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "lint": "eslint .",
+    "format": "prettier --write ."
   },
   "dependencies": {
     "@tamagui/config": "^1.126.9",
@@ -16,13 +19,21 @@
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-native": "0.79.2",
+    "react-native-appearance": "^0.3.4",
     "react-native-safe-area-context": "^5.4.0",
     "react-native-screens": "^4.10.0",
     "react-native-web": "^0.20.0",
     "tamagui": "^1.126.9"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0"
+    "@babel/core": "^7.20.0",
+    "@eslint/js": "^9.26.0",
+    "eslint": "^9.26.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-prettier": "^5.4.0",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-native": "^5.0.0",
+    "prettier": "^3.5.3"
   },
   "private": true,
   "tamagui": {
