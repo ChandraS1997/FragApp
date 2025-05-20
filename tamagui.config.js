@@ -42,7 +42,7 @@ const themes = {
     borderColor: tokens.color.borderLight,
     primary: tokens.color.primary,
     danger: tokens.color.danger,
-    hover: tokens.color.hoverLight,
+    hoverBackground: tokens.color.hoverLight,
   },
   dark: {
     background: tokens.color.bgDark,
@@ -51,7 +51,7 @@ const themes = {
     borderColor: tokens.color.borderDark,
     primary: tokens.color.primary,
     danger: tokens.color.danger,
-    hover: tokens.color.hoverLight,
+    hoverBackground: tokens.color.hoverLight,
   },
 };
 

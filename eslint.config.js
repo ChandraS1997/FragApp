@@ -37,7 +37,7 @@ export default [
       'no-unused-vars': 'warn',
       'no-console': 'error',
       'no-debugger': 'error',
-      'prettier/prettier': 'error',
+      'prettier/prettier': ['error', { endOfLine: 'auto' }],
     },
   },
   prettierConfig,
