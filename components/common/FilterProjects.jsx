@@ -55,6 +55,7 @@ const FilterProjects = () => {
       trapFocus
       allowEscape={false}
       closeOnOutsidePress={false}
+      disableAdapt
     >
       <Popover.Trigger asChild>
         <Button
@@ -78,8 +79,6 @@ const FilterProjects = () => {
         />
       </Popover.Trigger>
 
-      {/* ... Your Adapt and Sheet code unchanged ... */}
-
       <Popover.Content
         borderWidth={1}
         borderColor="$borderColor"
@@ -90,6 +89,8 @@ const FilterProjects = () => {
         exitStyle={{ y: -10, opacity: 0 }}
         animation="quick"
         backgroundColor="$bg"
+        maxWidth={250}
+        minWidth={200}
       >
         <YStack gap="$4">
           {/* Start Date */}
@@ -101,10 +102,14 @@ const FilterProjects = () => {
                 value={draftStartDate.toISOString().split('T')[0]}
                 onChange={e => setDraftStartDate(new Date(e.target.value))}
                 style={{
+                  marginLeft: 8,
                   padding: 6,
                   borderRadius: 4,
                   border: '1px solid #ccc',
                   minWidth: 120,
+                  right: 0,
+                  outline: 'none',
+                  boxShadow: 'none',
                 }}
               />
             ) : (
@@ -133,10 +138,14 @@ const FilterProjects = () => {
                 value={draftEndDate.toISOString().split('T')[0]}
                 onChange={e => setDraftEndDate(new Date(e.target.value))}
                 style={{
-                  padding: 8,
+                  marginLeft: 8,
+                  padding: 6,
                   borderRadius: 4,
                   border: '1px solid #ccc',
                   minWidth: 120,
+                  right: 0,
+                  outline: 'none',
+                  boxShadow: 'none',
                 }}
               />
             ) : (

@@ -1,25 +1,36 @@
 import { useState } from 'react';
-import {
-  Button,
-  YStack,
-  XStack,
-  Text,
-  useTheme,
-  Popover,
-  PopoverAnchor,
-  PopoverContent,
-} from 'tamagui';
+import { Platform } from 'react-native';
+import { Button, YStack, XStack, Text, Popover, PopoverAnchor, PopoverContent } from 'tamagui';
+import FlagWeb from 'react-world-flags'; // works only on web
 
 const languageOptions = [
-  { label: 'English', value: 'en', flag: '🇺🇸' },
-  { label: 'Русский', value: 'ru', flag: '🇷🇺' },
-  { label: '中文', value: 'zh', flag: '🇨🇳' },
+  { label: 'English', value: 'en', countryCode: 'us', emoji: '🇺🇸' },
+  { label: 'Русский', value: 'ru', countryCode: 'ru', emoji: '🇷🇺' },
+  { label: '中文', value: 'zh', countryCode: 'cn', emoji: '🇨🇳' },
 ];
 
-export default function LanguageSelector() {
+// Helper component to switch flag type
+const FlagIcon = ({ countryCode, emoji }) => {
+  if (Platform.OS === 'web') {
+    return (
+      <FlagWeb
+        code={countryCode}
+        style={{
+          width: 20,
+          height: 14,
+          borderRadius: 2,
+          objectFit: 'cover',
+        }}
+      />
+    );
+  } else {
+    return <Text style={{ fontSize: 16 }}>{emoji}</Text>;
+  }
+};
+
+const LanguageSelector = () => {
   const [selected, setSelected] = useState(languageOptions[0]);
   const [open, setOpen] = useState(false);
-  const theme = useTheme();
 
   const handleSelect = lang => {
     setSelected(lang);
@@ -30,7 +41,6 @@ export default function LanguageSelector() {
     <Popover open={open} onOpenChange={setOpen} placement="bottom-end">
       <PopoverAnchor>
         <XStack space="$1" alignItems="center" backgroundColor="$bg">
-          {/* Label also toggles dropdown */}
           <Text
             onPress={() => setOpen(true)}
             color="$textSecondary"
@@ -40,10 +50,7 @@ export default function LanguageSelector() {
             Language:
           </Text>
 
-          {/* Dropdown Trigger */}
           <Button
-            // size="$5"
-            icon={null}
             backgroundColor="$bg"
             onPress={() => setOpen(prev => !prev)}
             justifyContent="flex-start"
@@ -54,7 +61,7 @@ export default function LanguageSelector() {
             focusStyle={{ backgroundColor: '$bg' }}
           >
             <XStack alignItems="center" gap="$2">
-              <Text>{selected.flag}</Text>
+              <FlagIcon countryCode={selected.countryCode} emoji={selected.emoji} />
               <Text color="$textSecondary" hoverStyle={{ color: '$primary' }}>
                 {selected.label}
               </Text>
@@ -86,7 +93,7 @@ export default function LanguageSelector() {
               onPress={() => handleSelect(lang)}
             >
               <XStack alignItems="center" space="$2">
-                <Text>{lang.flag}</Text>
+                <FlagIcon countryCode={lang.countryCode} emoji={lang.emoji} />
                 <Text
                   color={lang.value === selected.value ? '$primary' : '$textSecondary'}
                   hoverStyle={{ color: '$primary' }}
@@ -100,4 +107,6 @@ export default function LanguageSelector() {
       </PopoverContent>
     </Popover>
   );
-}
+};
+
+export default LanguageSelector;

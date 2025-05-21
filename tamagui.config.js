@@ -42,7 +42,7 @@ const themes = {
   light: {
     background: tokens.color.bgLight,
     bg: tokens.color.bgSecondaryLight,
-    color: tokens.color.textLight,
+    textColor: tokens.color.textLight,
     textSecondary: tokens.color.textSecondaryLight,
     borderColor: tokens.color.borderLight,
     primary: tokens.color.primary,
@@ -52,7 +52,7 @@ const themes = {
   dark: {
     background: tokens.color.bgDark,
     bg: tokens.color.bgSecondaryDark,
-    color: tokens.color.textDark,
+    textColor: tokens.color.textDark,
     textSecondary: tokens.color.textSecondaryDark,
     borderColor: tokens.color.borderDark,
     primary: tokens.color.primary,

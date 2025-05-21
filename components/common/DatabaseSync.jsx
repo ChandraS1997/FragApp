@@ -30,6 +30,7 @@ const DatabaseSync = () => {
       trapFocus
       allowEscape={false}
       closeOnOutsidePress={false}
+      disableAdapt
     >
       <Popover.Trigger asChild>
         <Button
@@ -50,19 +51,6 @@ const DatabaseSync = () => {
         />
       </Popover.Trigger>
 
-      <Adapt when="maxMd" platform="touch">
-        <Sheet modal dismissOnSnapToBottom animation="medium">
-          <Sheet.Frame padding="$4">
-            <Adapt.Contents />
-          </Sheet.Frame>
-          <Sheet.Overlay
-            backgroundColor="$shadowColor"
-            enterStyle={{ opacity: 0 }}
-            exitStyle={{ opacity: 0 }}
-          />
-        </Sheet>
-      </Adapt>
-
       <Popover.Content
         borderWidth={1}
         borderColor="$borderColor"
@@ -73,6 +61,9 @@ const DatabaseSync = () => {
         exitStyle={{ y: -10, opacity: 0 }}
         animation="quick"
         backgroundColor="$bg"
+        // width={200}
+        maxWidth={250}
+        minWidth={200}
       >
         <Popover.Arrow size={20} backgroundColor="$bg" borderWidth={1} borderColor="$borderColor" />
 

@@ -12,6 +12,7 @@
     "format": "prettier --write ."
   },
   "dependencies": {
+    "@react-native-community/datetimepicker": "8.3.0",
     "@tamagui/config": "^1.126.9",
     "@tamagui/lucide-icons": "^1.126.9",
     "expo": "~53.0.9",
@@ -24,8 +25,8 @@
     "react-native-safe-area-context": "^5.4.0",
     "react-native-screens": "^4.10.0",
     "react-native-web": "^0.20.0",
-    "tamagui": "^1.126.9",
-    "@react-native-community/datetimepicker": "8.3.0"
+    "react-world-flags": "^1.6.0",
+    "tamagui": "^1.126.9"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

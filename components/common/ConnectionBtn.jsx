@@ -1,5 +1,7 @@
-import { Button, Paragraph, Tooltip, TooltipGroup } from 'tamagui';
-import { MaterialIcons } from '@expo/vector-icons';
+import { Button, Paragraph, Tooltip, TooltipGroup, Image } from 'tamagui';
+
+import onlineSvg from '../../assets/online.svg';
+const SvgIcon = () => <Image source={onlineSvg} width={18} height={18} />;
 
 const ConnectionBtn = props => {
   return (
@@ -11,13 +13,9 @@ const ConnectionBtn = props => {
             chromeless
             padding="$4"
             borderRadius="$0"
-            icon={() => <MaterialIcons name="fiber-manual-record" size={12} color="green" />}
-            hoverStyle={{
-              backgroundColor: '$bg',
-            }}
-            pressStyle={{
-              backgroundColor: '$bg',
-            }}
+            icon={SvgIcon}
+            hoverStyle={{ backgroundColor: '$bg' }}
+            pressStyle={{ backgroundColor: '$bg' }}
           />
         </Tooltip.Trigger>
         <Tooltip.Content
@@ -28,18 +26,11 @@ const ConnectionBtn = props => {
           y={0}
           opacity={1}
           py="$2"
-          animation={[
-            'quick',
-            {
-              opacity: {
-                overshootClamping: true,
-              },
-            },
-          ]}
+          backgroundColor="$bg"
         >
-          <Tooltip.Arrow />
-          <Paragraph size="$2" lineHeight="$1">
-            connection
+          <Tooltip.Arrow backgroundColor="$bg" />
+          <Paragraph size="$2" lineHeight="$1" color="$textColor">
+            Online
           </Paragraph>
         </Tooltip.Content>
       </Tooltip>

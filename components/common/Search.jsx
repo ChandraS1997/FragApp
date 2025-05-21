@@ -16,7 +16,6 @@ const SearchBar = () => {
       paddingVertical="$1"
       borderWidth={1}
       borderColor="$borderColor"
-      minWidth={400}
       gap="$2"
     >
       <Feather name="search" size={18} color="#999" />
@@ -33,7 +32,9 @@ const SearchBar = () => {
           borderColor: 'transparent',
           shadowColor: 'transparent',
         }}
+        minWidth={300}
         focusTheme={false}
+        justifyContent="flex-start"
       />
 
       {/* Clear button */}
