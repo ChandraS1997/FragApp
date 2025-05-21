@@ -23,7 +23,7 @@ const DatabaseSync = () => {
     <Popover
       open={open}
       onOpenChange={setOpen}
-      placement="bottom"
+      placement="bottom-end"
       stayInFrame
       allowFlip
       offset={10}

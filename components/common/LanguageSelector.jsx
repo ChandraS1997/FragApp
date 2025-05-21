@@ -27,7 +27,7 @@ export default function LanguageSelector() {
   };
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover open={open} onOpenChange={setOpen} placement="bottom-end">
       <PopoverAnchor>
         <XStack space="$1" alignItems="center" backgroundColor="$bg">
           {/* Label also toggles dropdown */}
