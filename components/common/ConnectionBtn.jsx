@@ -1,6 +1,3 @@
-// ConnectionBtn.jsx
-import React from 'react';
-import { Circle } from '@tamagui/lucide-icons';
 import { Button, Paragraph, Tooltip, TooltipGroup } from 'tamagui';
 import { MaterialIcons } from '@expo/vector-icons';
 
@@ -12,7 +9,7 @@ const ConnectionBtn = props => {
           <Button
             size="$5"
             chromeless
-            padding="$3"
+            padding="$4"
             borderRadius="$0"
             icon={() => <MaterialIcons name="fiber-manual-record" size={12} color="green" />}
             hoverStyle={{

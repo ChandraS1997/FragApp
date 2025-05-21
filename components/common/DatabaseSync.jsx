@@ -34,7 +34,7 @@ const DatabaseSync = () => {
       <Popover.Trigger asChild>
         <Button
           icon={Database}
-          padding="$3"
+          padding="$4"
           borderRadius="$0"
           size="$5"
           backgroundColor="$bg"
@@ -68,7 +68,7 @@ const DatabaseSync = () => {
         borderColor="$borderColor"
         borderRadius="$4"
         elevate
-        padding="$4"
+        padding="$3"
         enterStyle={{ y: -10, opacity: 0 }}
         exitStyle={{ y: -10, opacity: 0 }}
         animation="quick"
