@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@tamagui/config": "^1.126.9",
+    "@tamagui/lucide-icons": "^1.126.9",
     "expo": "~53.0.9",
     "expo-router": "^5.0.6",
     "expo-status-bar": "~2.2.3",

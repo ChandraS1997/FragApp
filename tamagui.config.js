@@ -25,6 +25,10 @@ const tokens = createTokens({
     bgLight: '#F5F5F5',
     bgDark: '#121212',
 
+    // backgrounds
+    bgSecondaryLight: '#ffffff',
+    bgSecondaryDark: '#000000',
+
     // Borders
     borderLight: '#e5e5e5',
     borderDark: '#333333',
@@ -37,6 +41,7 @@ const tokens = createTokens({
 const themes = {
   light: {
     background: tokens.color.bgLight,
+    bg: tokens.color.bgSecondaryLight,
     color: tokens.color.textLight,
     textSecondary: tokens.color.textSecondaryLight,
     borderColor: tokens.color.borderLight,
@@ -46,6 +51,7 @@ const themes = {
   },
   dark: {
     background: tokens.color.bgDark,
+    bg: tokens.color.bgSecondaryDark,
     color: tokens.color.textDark,
     textSecondary: tokens.color.textSecondaryDark,
     borderColor: tokens.color.borderDark,
