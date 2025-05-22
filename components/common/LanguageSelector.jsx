@@ -1,26 +1,28 @@
 import { useState } from 'react';
 import { Platform } from 'react-native';
 import { Button, YStack, XStack, Text, Popover, PopoverAnchor, PopoverContent } from 'tamagui';
-import FlagWeb from 'react-world-flags'; // works only on web
+import ReactCountryFlag from 'react-country-flag';
 
 const languageOptions = [
-  { label: 'English', value: 'en', countryCode: 'us', emoji: '🇺🇸' },
-  { label: 'Русский', value: 'ru', countryCode: 'ru', emoji: '🇷🇺' },
-  { label: '中文', value: 'zh', countryCode: 'cn', emoji: '🇨🇳' },
+  { label: 'English', value: 'en', countryCode: 'US', emoji: '🇺🇸' },
+  { label: 'Русский', value: 'ru', countryCode: 'RU', emoji: '🇷🇺' },
+  { label: '中文', value: 'zh', countryCode: 'CN', emoji: '🇨🇳' },
 ];
 
-// Helper component to switch flag type
+// Use react-country-flag on web, emoji on native
 const FlagIcon = ({ countryCode, emoji }) => {
   if (Platform.OS === 'web') {
     return (
-      <FlagWeb
-        code={countryCode}
+      <ReactCountryFlag
+        countryCode={countryCode}
+        svg
         style={{
-          width: 20,
-          height: 14,
-          borderRadius: 2,
+          width: '1.5em',
+          height: '1em',
+          borderRadius: '2px',
           objectFit: 'cover',
         }}
+        aria-label={countryCode}
       />
     );
   } else {
