@@ -2,18 +2,38 @@ import { View, Text, XStack, YStack, useWindowDimensions, Card } from 'tamagui'
 import { ScrollView } from 'react-native'
 import { Button } from '@tamagui/button'
 import { Pencil, Trash2 } from '@tamagui/lucide-icons'
+import { useState } from 'react'
  
-const data = Array.from({ length: 15 }).map((_, i) => ({
+const data = Array.from({ length: 50 }).map((_, i) => ({
   no: `${String(i + 1).padStart(2, '0')}`,
   name: i % 2 === 0 ? 'Omid Mine Site 1' : 'Omid Mine Site 2',
   updated: i % 2 === 0 ? 'Updated 16 hrs ago' : 'Updated 2 days ago',
   desc: i === 0 ? 'This is the image of adcd blast' : 'This is the image of Omid blast',
 }))
  
-export default function ProjectLists() {
+const ITEMS_PER_PAGE = 15
+
+export default function ProjectLists({query}) {
   const { height } = useWindowDimensions()
   const scrollMaxHeight = height * 0.60 // Adjusted to 45% of screen height for better responsiveness
+  const [page, setPage] = useState(1)
+
+  const filteredData = data.filter(item =>
+        item.name.toLowerCase().includes(query.toLowerCase())
+    )
+
+    const totalItems = filteredData.length
+    const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE)
  
+    const paginatedData = filteredData.slice(
+    (page - 1) * ITEMS_PER_PAGE,
+    page * ITEMS_PER_PAGE
+  )
+
+  const handlePrev = () => setPage(p => Math.max(1, p - 1))
+  const handleNext = () => setPage(p => Math.min(totalPages, p + 1))
+
+
   return (
     <YStack flex={1} backgroundColor="$gray2" padding="$4">
       <Card borderRadius="$6" backgroundColor="white" elevation="$4" padding="$4">
@@ -40,7 +60,7 @@ export default function ProjectLists() {
  
           {/* Rows */}
           <ScrollView style={{ maxHeight: scrollMaxHeight }}>
-            {data.map((item, index) => (
+            {paginatedData.map((item, index) => (
               <XStack
                 key={index}
                 alignItems="center"
@@ -63,16 +83,17 @@ export default function ProjectLists() {
  
           {/* Pagination */}
           <XStack padding="$3" justifyContent="space-between" alignItems="center" backgroundColor="white">
-            <Text color="$textSecondary" backgroundColor="$bg" fontSize="$4">Items per page 15 ▼</Text>
-            <Text color="$textSecondary" backgroundColor="$bg" fontSize="$4">1 -15 of 150 Items</Text>
+            <Text color="$textSecondary" fontSize="$4">Items per page {ITEMS_PER_PAGE}</Text>
+            <Text color="$textSecondary" fontSize="$4">
+              {Math.min((page - 1) * ITEMS_PER_PAGE + 1, totalItems)} -
+              {Math.min(page * ITEMS_PER_PAGE, totalItems)} of {totalItems} Items
+            </Text>
             <XStack alignItems="center" gap="$2">
-              <Button size="$2" variant="outlined">≪</Button>
-              <Button size="$2" variant="outlined">‹</Button>
-              <Button size="$2" variant="active">1</Button>
-              <Button size="$2" variant="outlined">2</Button>
-              <Button size="$2" variant="outlined">3</Button>
-              <Button size="$2" variant="outlined">›</Button>
-              <Button size="$2" variant="outlined">≫</Button>
+              <Button size="$2" variant="outlined" onPress={() => setPage(1)} disabled={page === 1}>≪</Button>
+              <Button size="$2" variant="outlined" onPress={handlePrev} disabled={page === 1}>‹</Button>
+              <Button size="$2" variant="active">{page}</Button>
+              <Button size="$2" variant="outlined" onPress={handleNext} disabled={page === totalPages}>›</Button>
+              <Button size="$2" variant="outlined" onPress={() => setPage(totalPages)} disabled={page === totalPages}>≫</Button>
             </XStack>
           </XStack>
         </XStack>
