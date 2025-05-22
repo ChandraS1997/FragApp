@@ -37,7 +37,7 @@ const DatabaseSync = () => {
           icon={Database}
           padding="$4"
           borderRadius="$0"
-          size="$5"
+          size="$6"
           backgroundColor="$bg"
           color="$primary"
           onPress={() => setOpen(true)}

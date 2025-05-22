@@ -24,7 +24,7 @@ const FlagIcon = ({ countryCode, emoji }) => {
       />
     );
   } else {
-    return <Text style={{ fontSize: 16 }}>{emoji}</Text>;
+    return <Text style={{ fontSize: 18 }}>{emoji}</Text>;
   }
 };
 
@@ -78,7 +78,7 @@ const LanguageSelector = () => {
         borderWidth={1}
         borderColor="$borderColor"
       >
-        <YStack space="$1">
+        <YStack gap="$1">
           {languageOptions.map(lang => (
             <Button
               key={lang.value}
@@ -92,7 +92,7 @@ const LanguageSelector = () => {
               justifyContent="flex-start"
               onPress={() => handleSelect(lang)}
             >
-              <XStack alignItems="center" space="$2">
+              <XStack alignItems="center" gap="$2">
                 <FlagIcon countryCode={lang.countryCode} emoji={lang.emoji} />
                 <Text
                   color={lang.value === selected.value ? '$primary' : '$textSecondary'}

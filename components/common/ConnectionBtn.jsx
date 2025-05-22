@@ -9,7 +9,7 @@ const ConnectionBtn = props => {
       <Tooltip placement="bottom" {...props}>
         <Tooltip.Trigger>
           <Button
-            size="$5"
+            size="$6"
             chromeless
             padding="$4"
             borderRadius="$0"
