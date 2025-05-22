@@ -4,11 +4,11 @@ import ListGridBtn from './ListGridBtn';
 import SearchBar from './Search';
 import CreateProject from './CreateProject';
 
-const ProjectActionBar = () => {
+const ProjectActionBar = ({query,setQuery}) => {
   return (
     <XStack margin="$4" justifyContent="space-between">
       <XStack gap="$4">
-        <SearchBar />
+        <SearchBar query={query} setQuery={setQuery} />
         <FilterProjects />
         <ListGridBtn />
       </XStack>
