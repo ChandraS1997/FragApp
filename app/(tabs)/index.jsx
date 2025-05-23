@@ -5,7 +5,7 @@ import ProjectLists from '../../components/common/ProjectLists';
 import { useState } from 'react';
 
 const Home = () => {
-  const [query, setQuery] = useState('')
+  const [query, setQuery] = useState('');
 
   return (
     <YStack flex={1}>

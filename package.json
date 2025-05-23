@@ -2,7 +2,6 @@
   "name": "expo_project",
   "version": "1.0.0",
   "main": "expo-router/entry",
-  "type": "module",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
@@ -27,6 +26,7 @@
     "react-native-elements": "^3.4.3",
     "react-native-safe-area-context": "^5.4.0",
     "react-native-screens": "^4.10.0",
+    "react-native-svg": "15.11.2",
     "react-native-web": "^0.20.0",
     "react-world-flags": "^1.6.0",
     "tamagui": "^1.126.9"
@@ -39,7 +39,8 @@
     "eslint-plugin-prettier": "^5.4.0",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-native": "^5.0.0",
-    "prettier": "^3.5.3"
+    "prettier": "^3.5.3",
+    "react-native-svg-transformer": "^1.5.1"
   },
   "private": true,
   "tamagui": {
