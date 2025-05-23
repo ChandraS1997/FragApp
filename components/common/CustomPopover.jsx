@@ -10,7 +10,7 @@ const CustomPopover = ({ trigger, content }) => {
       placement="right-start"
       stayInFrame
       allowFlip
-      offset={10}
+      offset={25}
       trapFocus
       allowEscape={false}
       closeOnOutsidePress={false}
@@ -19,11 +19,10 @@ const CustomPopover = ({ trigger, content }) => {
       <Popover.Trigger asChild>{trigger}</Popover.Trigger>
 
       <Popover.Content
-        borderWidth={1}
-        borderColor="$borderColor"
-        borderRadius="$4"
+        borderRadius={8}
         elevate
         padding="$3"
+        offset={100}
         enterStyle={{ y: -10, opacity: 0 }}
         exitStyle={{ y: -10, opacity: 0 }}
         animation="quick"
@@ -32,7 +31,7 @@ const CustomPopover = ({ trigger, content }) => {
         // maxWidth={250}
         // minWidth={200}
       >
-        <Popover.Arrow size={20} backgroundColor="$bg" borderWidth={1} borderColor="$borderColor" />
+        <Popover.Arrow size={25} backgroundColor="$bg" borderWidth={1} borderColor="$borderColor" />
         {content}
       </Popover.Content>
     </Popover>
