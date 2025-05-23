@@ -1,7 +1,7 @@
 import { Button, Paragraph, Tooltip, TooltipGroup, Image } from 'tamagui';
 
-import onlineSvg from '../../assets/online.svg';
-const SvgIcon = () => <Image source={onlineSvg} width={18} height={18} />;
+import OnlineSvg from '../../assets/online.svg';
+const SvgIcon = ({ color = '#888' }) => <OnlineSvg width={18} height={18} color={color} />;
 
 const ConnectionBtn = props => {
   return (
