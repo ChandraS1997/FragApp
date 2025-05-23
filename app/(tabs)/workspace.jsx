@@ -1,12 +1,15 @@
+import { useState } from 'react';
 import { useRouter } from 'expo-router';
 import Header from '../../components/common/Header';
 import { XStack, Text, YStack, View } from 'tamagui';
 import { ArrowLeft } from '@tamagui/lucide-icons';
 import SideToolbar from '../../components/common/SideToolbar';
 import ViewControls from '../../components/common/ViewControls';
+import SidebarGraph from '../../components/common/SidebarGraph';
 
 const WorkSpace = () => {
   const router = useRouter();
+  const [sidebarMode, setSidebarMode] = useState('tools'); // 'tools' or 'graph'
 
   const handleBack = () => {
     router.push('/projectView');
@@ -14,7 +17,6 @@ const WorkSpace = () => {
 
   return (
     <YStack f={1}>
-      {/* Header */}
       <Header
         title={
           <XStack alignItems="center" gap="$2">
@@ -25,34 +27,37 @@ const WorkSpace = () => {
         }
       />
 
-      {/* Main layout: sidebar + blank area */}
       <XStack f={1}>
-        {/* Sidebar */}
-        <SideToolbar width={200} />
+        {sidebarMode === 'tools' ? (
+          <SideToolbar onSwitchSidebar={() => setSidebarMode('graph')} />
+        ) : (
+          <SidebarGraph onSwitchSidebar={() => setSidebarMode('tools')} />
+        )}
 
-        {/* Blank content area */}
+        {/* 🔁 Main content area that changes with the sidebar mode */}
         <View
           f={1}
           position="relative"
-          backgroundColor="black"
+          backgroundColor={sidebarMode === 'tools' ? 'black' : '#f4f4f4'}
           p="$4"
           justifyContent="center"
           alignItems="center"
         >
-          <Text size={80} color="white">
-            Image Area
-          </Text>
+          {sidebarMode === 'tools' ? (
+            <Text size={80} color="white">
+              Tool View
+            </Text>
+          ) : (
+            <Text size={80} color="$color">
+              Graph View
+            </Text>
+          )}
 
-          {/* Floating component in bottom-right corner */}
-          <View
-            position="absolute"
-            bottom={20}
-            right={20}
-            justifyContent="center"
-            alignItems="center"
-          >
-            <ViewControls />
-          </View>
+          {sidebarMode === 'tools' && (
+            <View position="absolute" bottom={20} right={20}>
+              <ViewControls />
+            </View>
+          )}
         </View>
       </XStack>
     </YStack>
