@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { ToggleGroup } from 'tamagui';
 import { Feather } from '@expo/vector-icons';
 
-const ListGridBtn = () => {
-  const [viewMode, setViewMode] = useState('list'); // always starts with a value
+const ListGridBtn = ({viewMode, setViewMode}) => {
+   // always starts with a value
 
   return (
     <ToggleGroup
