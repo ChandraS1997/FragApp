@@ -1,10 +1,11 @@
-import { useRouter } from 'expo-router';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 import { XStack, Text } from 'tamagui';
 import { ArrowLeft } from '@tamagui/lucide-icons';
 import Header from '../../components/common/Header';
 
 const ProjectView = () => {
   const router = useRouter();
+   const { id, name, desc, updated } = useLocalSearchParams();
 
   const handleBack = () => {
     router.push('/');
@@ -16,7 +17,7 @@ const ProjectView = () => {
         title={
           <XStack alignItems="center" space="$2">
             <ArrowLeft size={20} color="black" onPress={handleBack} style={{ cursor: 'pointer' }} />
-            <Text>My Project</Text>
+            <Text>{name}</Text>
           </XStack>
         }
       />

@@ -3,29 +3,31 @@ import { ScrollView } from 'react-native'
 import { Button } from '@tamagui/button'
 import { Pencil, Trash2 } from '@tamagui/lucide-icons'
 import { useState } from 'react'
- 
+import { useRouter } from 'expo-router'
+
 const data = Array.from({ length: 50 }).map((_, i) => ({
   no: `${String(i + 1).padStart(2, '0')}`,
   name: i % 2 === 0 ? 'Omid Mine Site 1' : 'Omid Mine Site 2',
   updated: i % 2 === 0 ? 'Updated 16 hrs ago' : 'Updated 2 days ago',
   desc: i === 0 ? 'This is the image of adcd blast' : 'This is the image of Omid blast',
 }))
- 
+
 const ITEMS_PER_PAGE = 15
 
-export default function ProjectLists({query}) {
+export default function ProjectLists({ query }) {
   const { height } = useWindowDimensions()
   const scrollMaxHeight = height * 0.60 // Adjusted to 45% of screen height for better responsiveness
   const [page, setPage] = useState(1)
+  const router = useRouter();
 
   const filteredData = data.filter(item =>
-        item.name.toLowerCase().includes(query.toLowerCase())
-    )
+    item.name.toLowerCase().includes(query.toLowerCase())
+  )
 
-    const totalItems = filteredData.length
-    const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE)
- 
-    const paginatedData = filteredData.slice(
+  const totalItems = filteredData.length
+  const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE)
+
+  const paginatedData = filteredData.slice(
     (page - 1) * ITEMS_PER_PAGE,
     page * ITEMS_PER_PAGE
   )
@@ -57,7 +59,7 @@ export default function ProjectLists({query}) {
             <Text flex={4} fontWeight="600" fontSize="$5" color="$textSecondary" backgroundColor="$bg">Description</Text>
             <Text flex={2} fontWeight="600" fontSize="$5" color="$textSecondary" backgroundColor="$bg" textAlign="center">Actions</Text>
           </XStack>
- 
+
           {/* Rows */}
           <ScrollView style={{ maxHeight: scrollMaxHeight }}>
             {paginatedData.map((item, index) => (
@@ -74,13 +76,25 @@ export default function ProjectLists({query}) {
                 <Text flex={3} fontSize="$4" color="$textSecondary" backgroundColor="$bg">{item.updated}</Text>
                 <Text flex={4} fontSize="$4" color="$textSecondary" backgroundColor="$bg">{item.desc}</Text>
                 <XStack flex={2} gap="$2" justifyContent="center" paddingRight="$2">
-                  <Button icon={Pencil} size="$2" />
+                  <Button icon={Pencil} size="$2"
+                    onPress={() => {
+                      router.push({
+                        pathname: '/projectView',
+                        params: {
+                          id: item.no,        // or a unique ID
+                          name: item.name,
+                          desc: item.desc,
+                          updated: item.updated,
+                        },
+                      })
+                    }}
+                  />
                   <Button icon={Trash2} size="$2" theme="red" />
                 </XStack>
               </XStack>
             ))}
           </ScrollView>
- 
+
           {/* Pagination */}
           <XStack padding="$3" justifyContent="space-between" alignItems="center" backgroundColor="white">
             <Text color="$textSecondary" fontSize="$4">Items per page {ITEMS_PER_PAGE}</Text>
@@ -101,5 +115,4 @@ export default function ProjectLists({query}) {
     </YStack>
   )
 }
- 
- 
+
