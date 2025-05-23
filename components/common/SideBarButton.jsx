@@ -1,7 +1,9 @@
-import { forwardRef } from 'react';
+import { forwardRef, useState } from 'react';
 import { YStack, Text, Button } from 'tamagui';
 
-const SidebarButton = forwardRef(({ icon, label, ...props }, ref) => {
+const SidebarButton = forwardRef(({ icon: Icon, label, ...props }, ref) => {
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
     <YStack alignItems="center" gap={10}>
       <Button
@@ -15,12 +17,18 @@ const SidebarButton = forwardRef(({ icon, label, ...props }, ref) => {
         backgroundColor="$bg"
         hoverStyle={{ backgroundColor: '$hoverBackground' }}
         pressStyle={{ backgroundColor: '$hoverBackground' }}
+        onHoverIn={() => setIsHovered(true)}
+        onHoverOut={() => setIsHovered(false)}
       >
-        {icon}
+        {/* Render icon component with color prop */}
+        {Icon && <Icon width={24} height={24} color={isHovered ? '#267EF9' : '#888'} />}
       </Button>
-      <Text size={14} color="$textSecondary">
-        {label}
-      </Text>
+
+      {label && (
+        <Text size={14} color="$textSecondary">
+          {label}
+        </Text>
+      )}
     </YStack>
   );
 });

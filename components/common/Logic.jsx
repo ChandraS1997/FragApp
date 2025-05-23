@@ -1,22 +1,17 @@
 import CustomPopover from './CustomPopover';
 import SidebarButton from './SideBarButton';
-import { Image, Label, YStack } from 'tamagui';
+import { Label, YStack } from 'tamagui';
 import { Slider } from 'react-native-elements';
 import SwitchWithLabel from './SwitchWithLabel';
 import CustomMenu from './CustomMenu';
-import logic from '../../assets/icons/logic.svg';
+import LogicIcon from '../../assets/icons/logic.svg';
 import { useState } from 'react';
 
 const Logic = () => {
   return (
     <>
       <CustomPopover
-        trigger={
-          <SidebarButton
-            icon={<Image source={logic} style={{ width: 24, height: 24 }} />}
-            label="Logic"
-          />
-        }
+        trigger={<SidebarButton icon={LogicIcon} label="Logic" />}
         content={<LogicContent />}
       />
     </>

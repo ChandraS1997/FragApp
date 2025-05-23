@@ -1,18 +1,13 @@
 import CustomPopover from './CustomPopover';
 import SidebarButton from './SideBarButton';
-import { Image, Label, XStack, YStack } from 'tamagui';
-import color from '../../assets/icons/color.svg';
+import { Label, XStack, YStack } from 'tamagui';
+import ColorIcon from '../../assets/icons/color.svg';
 
 const Color = () => {
   return (
     <>
       <CustomPopover
-        trigger={
-          <SidebarButton
-            icon={<Image source={color} style={{ width: 24, height: 24 }} />}
-            label="Color"
-          />
-        }
+        trigger={<SidebarButton icon={ColorIcon} label="Color" />}
         content={<ColorContent />}
       />
     </>
