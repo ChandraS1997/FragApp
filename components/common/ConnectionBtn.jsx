@@ -9,9 +9,12 @@ const ConnectionBtn = props => {
       <Tooltip placement="bottom" {...props}>
         <Tooltip.Trigger>
           <Button
-            size="$6"
+            size="$5"
+            width={60}
+            height={60}
             chromeless
-            padding="$4"
+            paddingHorizontal={10}
+            paddingVertical={0}
             borderRadius="$0"
             icon={SvgIcon}
             hoverStyle={{ backgroundColor: '$bg' }}
