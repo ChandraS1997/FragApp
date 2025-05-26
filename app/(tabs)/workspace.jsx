@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useRouter } from 'expo-router';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 import Header from '../../components/common/Header';
 import { XStack, Text, YStack, View } from 'tamagui';
 import { ArrowLeft } from '@tamagui/lucide-icons';
@@ -128,6 +128,7 @@ const data = [
 const WorkSpace = () => {
   const router = useRouter();
   const [sidebarMode, setSidebarMode] = useState('tools'); // 'tools' or 'graph'
+   const { id, name } = useLocalSearchParams();
   const [selectedGraph, setSelectedGraph] = useState('graph1');
   const handleBack = () => {
     router.push('/projectView');
@@ -140,9 +141,9 @@ const WorkSpace = () => {
           <XStack alignItems="center">
             <ArrowLeft size={20} onPress={handleBack} style={{ cursor: 'pointer' }} />
             <Text color="$primary" paddingLeft={10}>
-              My Project
+              {id}
             </Text>
-            <Text>/ImageName</Text>
+            <Text>/{name}</Text>
           </XStack>
         }
       />

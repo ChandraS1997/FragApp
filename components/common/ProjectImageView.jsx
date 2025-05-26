@@ -33,17 +33,18 @@ export default function ProjectImageView({ query }) {
   const handleNext = () => setPage(p => Math.min(totalPages, p + 1))
   return (
     <YStack flex={1} backgroundColor="$gray2" padding="$4">
-      <Card borderRadius="$6" backgroundColor="white" elevation="$4" padding="$4">
+      <Card borderRadius="$6" backgroundColor="white" elevation="$4" padding="$4" flex={1}>
         <XStack
           borderRadius="$4"
           overflow="hidden"
           flexDirection="column"
           borderWidth={1}
           borderColor="$borderColor"
+          flex={1}
         >
 
           <YStack flex={1} backgroundColor="$gray2" padding="$4">
-            <ScrollView style={{ maxHeight: scrollMaxHeight }}>
+            <ScrollView style={{ flex: 1  }} contentContainerStyle={{ flexGrow: 1 }}>
               <XStack flexWrap="wrap" justifyContent="space-between" gap="$4">
                 {paginatedData.map((item, index) => (
                   <Card
@@ -104,15 +105,24 @@ export default function ProjectImageView({ query }) {
             <XStack marginTop="$4" justifyContent="space-between" alignItems="center">
               <Text color="$textSecondary" fontSize="$4">Items per page {ITEMS_PER_PAGE}</Text>
               <Text color="$textSecondary" fontSize="$4">
-                {Math.min((page - 1) * ITEMS_PER_PAGE + 1, totalItems)} -
-                {Math.min(page * ITEMS_PER_PAGE, totalItems)} of {totalItems} Items
+                {`${Math.min((page - 1) * ITEMS_PER_PAGE + 1, totalItems)} - ${Math.min(page * ITEMS_PER_PAGE, totalItems)} of ${totalItems} Items`}
               </Text>
               <XStack alignItems="center" gap="$2">
-                <Button size="$2" variant="outlined" onPress={() => setPage(1)} disabled={page === 1}>≪</Button>
-                <Button size="$2" variant="outlined" onPress={handlePrev} disabled={page === 1}>‹</Button>
-                <Button size="$2" variant="active">{page}</Button>
-                <Button size="$2" variant="outlined" onPress={handleNext} disabled={page === totalPages}>›</Button>
-                <Button size="$2" variant="outlined" onPress={() => setPage(totalPages)} disabled={page === totalPages}>≫</Button>
+                <Button size="$2" variant="outlined" onPress={() => setPage(1)} disabled={page === 1}>
+                  <Text>≪</Text>
+                </Button>
+                <Button size="$2" variant="outlined" onPress={handlePrev} disabled={page === 1}>
+                  <Text>‹</Text>
+                </Button>
+                <Button size="$2" variant="active">
+                  <Text>{page}</Text>
+                </Button>
+                <Button size="$2" variant="outlined" onPress={handleNext} disabled={page === totalPages}>
+                  <Text>›</Text>
+                </Button>
+                <Button size="$2" variant="outlined" onPress={() => setPage(totalPages)} disabled={page === totalPages}>
+                  <Text>≫</Text>
+                </Button>
               </XStack>
             </XStack>
           </YStack>

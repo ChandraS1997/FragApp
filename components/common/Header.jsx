@@ -1,5 +1,5 @@
 import { XStack, Text, Image } from 'tamagui';
-import logo from '../../assets/Logo.png';
+import logo from '../../assets/logo.png';
 import DatabaseSync from './DatabaseSync';
 import LanguageSelector from './LanguageSelector';
 import ConnectionBtn from './ConnectionBtn';
