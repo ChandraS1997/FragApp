@@ -98,7 +98,16 @@ const ProjectView = () => {
         {/* Image Grid */}
         <ScrollView contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap' }} style={{ maxHeight: '100%' }}>
           {images.map((img) => (
-            <Card key={img.id} width={180} margin="$2" elevate bordered>
+            <Card key={img.id} width={180} margin="$2" elevate bordered 
+            onPress={() => {
+                      router.push({
+                        pathname: '/workspace',
+                        params: {
+                          id: name,        // or a unique ID
+                          name: img.name
+                        },
+                      })
+                    }}>
               <YStack>
                 <XStack justifyContent="flex-end" position="absolute" top={4} right={4} zIndex={10}>
                   <Button size="$2" circular icon={Trash} />
