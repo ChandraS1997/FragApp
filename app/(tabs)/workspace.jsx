@@ -6,6 +6,123 @@ import { ArrowLeft } from '@tamagui/lucide-icons';
 import SideToolbar from '../../components/common/SideToolbar';
 import ViewControls from '../../components/common/ViewControls';
 import SidebarGraph from '../../components/common/SidebarGraph';
+import ParamsTable from '../../components/common/ParamsTable';
+import SizeInfoTable from '../../components/common/SizeInfoTable';
+
+const data = [
+  {
+    size: 1000.0,
+    passing: '100.0%',
+  },
+  {
+    size: 1000.0,
+    passing: '100.0%',
+  },
+  {
+    size: 1000.0,
+    passing: '100.0%',
+  },
+  {
+    size: 1000.0,
+    passing: '100.0%',
+  },
+  {
+    size: 1000.0,
+    passing: '100.0%',
+  },
+  {
+    size: 1000.0,
+    passing: '100.0%',
+  },
+  {
+    size: 1000.0,
+    passing: '100.0%',
+  },
+  {
+    size: 1000.0,
+    passing: '100.0%',
+  },
+  {
+    size: 1000.0,
+    passing: '100.0%',
+  },
+  {
+    size: 1000.0,
+    passing: '100.0%',
+  },
+  {
+    size: 1000.0,
+    passing: '100.0%',
+  },
+  {
+    size: 1000.0,
+    passing: '100.0%',
+  },
+  {
+    size: 1000.0,
+    passing: '100.0%',
+  },
+  {
+    size: 1000.0,
+    passing: '100.0%',
+  },
+  {
+    size: 1000.0,
+    passing: '100.0%',
+  },
+  {
+    size: 1000.0,
+    passing: '100.0%',
+  },
+  {
+    size: 1000.0,
+    passing: '100.0%',
+  },
+  {
+    size: 1000.0,
+    passing: '100.0%',
+  },
+  {
+    size: 1000.0,
+    passing: '100.0%',
+  },
+  {
+    size: 1000.0,
+    passing: '100.0%',
+  },
+  {
+    size: 1000.0,
+    passing: '100.0%',
+  },
+  {
+    size: 1000.0,
+    passing: '100.0%',
+  },
+  {
+    size: 1000.0,
+    passing: '100.0%',
+  },
+  {
+    size: 1000.0,
+    passing: '100.0%',
+  },
+  {
+    size: 1000.0,
+    passing: '100.0%',
+  },
+  {
+    size: 1000.0,
+    passing: '100.0%',
+  },
+  {
+    size: 1000.0,
+    passing: '100.0%',
+  },
+  {
+    size: 1000.0,
+    passing: '100.0%',
+  },
+];
 
 const WorkSpace = () => {
   const router = useRouter();
@@ -19,9 +136,11 @@ const WorkSpace = () => {
     <YStack f={1}>
       <Header
         title={
-          <XStack alignItems="center" gap="$2">
+          <XStack alignItems="center">
             <ArrowLeft size={20} onPress={handleBack} style={{ cursor: 'pointer' }} />
-            <Text color="$primary">My Project</Text>
+            <Text color="$primary" paddingLeft={10}>
+              My Project
+            </Text>
             <Text>/ImageName</Text>
           </XStack>
         }
@@ -34,23 +153,35 @@ const WorkSpace = () => {
           <SidebarGraph onSwitchSidebar={() => setSidebarMode('tools')} />
         )}
 
-        {/* 🔁 Main content area that changes with the sidebar mode */}
-        <View
-          f={1}
-          position="relative"
-          backgroundColor={sidebarMode === 'tools' ? 'black' : '#f4f4f4'}
-          p="$4"
-          justifyContent="center"
-          alignItems="center"
-        >
+        <View f={1} position="relative" justifyContent="center" alignItems="center">
           {sidebarMode === 'tools' ? (
-            <Text size={80} color="white">
+            <Text size={80} color="$textColor">
               Tool View
             </Text>
           ) : (
-            <Text size={80} color="$color">
-              Graph View
-            </Text>
+            <XStack f={1} width="100%" height="100%">
+              {/* Graph placeholder */}
+              <YStack f={1} bc="$background" jc="center" ai="center" borderRadius={8}>
+                <Text fontSize={24} color="$gray10">
+                  Graph
+                </Text>
+                <View position="absolute" top={0} right={0} zIndex={10}>
+                  <ParamsTable />
+                </View>
+              </YStack>
+
+              {/* Info table */}
+              <YStack
+                padding={16}
+                backgroundColor="$background"
+                borderWidth={1}
+                borderColor="$borderColor"
+                borderRadius={8}
+                overflow="hidden"
+              >
+                <SizeInfoTable data={data} />
+              </YStack>
+            </XStack>
           )}
 
           {sidebarMode === 'tools' && (
