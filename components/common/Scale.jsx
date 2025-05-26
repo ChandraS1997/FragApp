@@ -3,18 +3,13 @@ import CustomPopover from './CustomPopover';
 import SidebarButton from './SideBarButton';
 import SwitchWithLabel from './SwitchWithLabel';
 import CustomMenu from './CustomMenu';
-import ruler from '../../assets/icons/ruler.svg';
+import RulerIcon from '../../assets/icons/ruler.svg';
 
 const Scale = () => {
   return (
     <>
       <CustomPopover
-        trigger={
-          <SidebarButton
-            icon={<Image source={ruler} style={{ width: 24, height: 24 }} />}
-            label="Scale"
-          />
-        }
+        trigger={<SidebarButton icon={RulerIcon} label="Scale" />}
         content={<ScalingContent />}
       />
     </>

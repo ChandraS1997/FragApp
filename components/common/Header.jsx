@@ -1,5 +1,5 @@
 import { XStack, Text, Image } from 'tamagui';
-import logo from '../../assets/logo.png';
+import logo from '../../assets/Logo.png';
 import DatabaseSync from './DatabaseSync';
 import LanguageSelector from './LanguageSelector';
 import ConnectionBtn from './ConnectionBtn';
@@ -13,16 +13,17 @@ const Header = ({ title }) => {
       borderBottomWidth={1}
       borderColor="$borderColor"
       width="100%"
+      height={60}
     >
       <XStack alignItems="center" gap="$4">
         <Image source={logo} width={100} style={{ resizeMode: 'cover' }} />
 
-        <Text paddingLeft="$2" fontSize="$8" fontWeight="700">
+        <Text paddingHorizontal={16} fontSize={16} fontWeight="600">
           {title}
         </Text>
       </XStack>
 
-      <XStack alignItems="center">
+      <XStack alignItems="center" gap={1}>
         <LanguageSelector />
 
         <XStack borderLeftWidth={1} borderColor="$borderColor">

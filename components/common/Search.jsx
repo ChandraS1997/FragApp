@@ -3,12 +3,12 @@ import { Feather } from '@expo/vector-icons';
 import { Input, XStack } from 'tamagui';
 import { Pressable } from 'react-native';
 
-const SearchBar = ({query,setQuery}) => {
- 
+const SearchBar = ({ query, setQuery }) => {
   return (
     <XStack
       alignItems="center"
       backgroundColor="$bg"
+      width={301}
       borderRadius="$2"
       padding="$2"
       paddingHorizontal="$4"

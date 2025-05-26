@@ -42,17 +42,24 @@ const LanguageSelector = () => {
   return (
     <Popover open={open} onOpenChange={setOpen} placement="bottom-end">
       <PopoverAnchor>
-        <XStack space="$1" alignItems="center" backgroundColor="$bg">
+        <XStack width={187} gap={1} alignItems="center" backgroundColor="$bg">
           <Text
+            width={90}
+            paddingVertical={8}
+            paddingRight={4}
+            paddingLeft={16}
             onPress={() => setOpen(true)}
             color="$textSecondary"
             backgroundColor="$bg"
             hoverStyle={{ color: '$primary' }}
           >
-            Language:
+            Language
           </Text>
 
           <Button
+            // width={96}
+            // paddingVertical={8}
+            paddingRight={16}
             backgroundColor="$bg"
             onPress={() => setOpen(prev => !prev)}
             justifyContent="flex-start"
@@ -62,9 +69,14 @@ const LanguageSelector = () => {
             hoverStyle={{ backgroundColor: '$bg' }}
             focusStyle={{ backgroundColor: '$bg' }}
           >
-            <XStack alignItems="center" gap="$2">
+            <XStack width={120} paddingVertical={8} paddingRight={16} alignItems="center" gap={8}>
               <FlagIcon countryCode={selected.countryCode} emoji={selected.emoji} />
-              <Text color="$textSecondary" hoverStyle={{ color: '$primary' }}>
+              <Text
+                color="$textSecondary"
+                hoverStyle={{ color: '$primary' }}
+                fontWeight={400}
+                size={14}
+              >
                 {selected.label}
               </Text>
             </XStack>
@@ -75,16 +87,19 @@ const LanguageSelector = () => {
       <PopoverContent
         placement="top"
         elevate
-        padding="$2"
+        padding={0}
         backgroundColor="$bg"
         borderWidth={1}
         borderColor="$borderColor"
       >
-        <YStack gap="$1">
+        <YStack>
           {languageOptions.map(lang => (
             <Button
               key={lang.value}
-              size="$2"
+              width={132}
+              height={40}
+              paddingHorizontal={16}
+              paddingVertical={8}
               variant="ghost"
               backgroundColor="$bg"
               borderWidth={0}
@@ -94,7 +109,7 @@ const LanguageSelector = () => {
               justifyContent="flex-start"
               onPress={() => handleSelect(lang)}
             >
-              <XStack alignItems="center" gap="$2">
+              <XStack alignItems="center" gap={8}>
                 <FlagIcon countryCode={lang.countryCode} emoji={lang.emoji} />
                 <Text
                   color={lang.value === selected.value ? '$primary' : '$textSecondary'}

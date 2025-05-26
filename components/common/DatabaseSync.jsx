@@ -35,9 +35,12 @@ const DatabaseSync = () => {
       <Popover.Trigger asChild>
         <Button
           icon={Database}
-          padding="$4"
+          width={60}
+          height={60}
+          paddingHorizontal={10}
+          paddingVertical={0}
           borderRadius="$0"
-          size="$6"
+          size="$5"
           backgroundColor="$bg"
           color="$primary"
           onPress={() => setOpen(true)}
@@ -56,18 +59,18 @@ const DatabaseSync = () => {
         borderColor="$borderColor"
         borderRadius="$4"
         elevate
-        padding="$3"
+        padding={16}
         enterStyle={{ y: -10, opacity: 0 }}
         exitStyle={{ y: -10, opacity: 0 }}
         animation="quick"
         backgroundColor="$bg"
-        // width={200}
-        maxWidth={250}
-        minWidth={200}
+        width={248}
+        // maxWidth={250}
+        // minWidth={200}
       >
         <Popover.Arrow size={20} backgroundColor="$bg" borderWidth={1} borderColor="$borderColor" />
 
-        <YStack gap="$3">
+        <YStack gap="$3" width={216}>
           {['BIMS', 'LEDR'].map((label, index) => {
             const isSelected = tempOption === label;
             return (

@@ -2,12 +2,13 @@ import { Button, XStack } from 'tamagui';
 
 export const DualButton = ({ onCancel, onApply }) => {
   return (
-    <XStack width="100%" gap="$4">
+    <XStack width="100%" gap={8}>
       {/* Cancel Button */}
       <Button
         flex={1}
         backgroundColor="$bg"
         color="$textSecondary"
+        borderRadius={8}
         borderWidth={0}
         hoverStyle={{
           backgroundColor: '$hoverBackground',
@@ -27,6 +28,7 @@ export const DualButton = ({ onCancel, onApply }) => {
       <Button
         flex={1}
         backgroundColor="$primary"
+        borderRadius={8}
         color="$bg"
         borderWidth={0}
         hoverStyle={{
