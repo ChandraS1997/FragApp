@@ -8,6 +8,7 @@ import ViewControls from '../../components/common/ViewControls';
 import SidebarGraph from '../../components/common/SidebarGraph';
 import ParamsTable from '../../components/common/ParamsTable';
 import SizeInfoTable from '../../components/common/SizeInfoTable';
+import DataTable from '../../components/common/DataTable';
 
 const data = [
   {
@@ -127,7 +128,7 @@ const data = [
 const WorkSpace = () => {
   const router = useRouter();
   const [sidebarMode, setSidebarMode] = useState('tools'); // 'tools' or 'graph'
-
+  const [selectedGraph, setSelectedGraph] = useState('graph1');
   const handleBack = () => {
     router.push('/projectView');
   };
@@ -150,7 +151,11 @@ const WorkSpace = () => {
         {sidebarMode === 'tools' ? (
           <SideToolbar onSwitchSidebar={() => setSidebarMode('graph')} />
         ) : (
-          <SidebarGraph onSwitchSidebar={() => setSidebarMode('tools')} />
+          <SidebarGraph
+            selectedGraph={selectedGraph}
+            onSelectGraph={setSelectedGraph}
+            onSwitchSidebar={() => setSidebarMode('tools')}
+          />
         )}
 
         <View f={1} position="relative" justifyContent="center" alignItems="center">
@@ -166,7 +171,35 @@ const WorkSpace = () => {
                   Graph
                 </Text>
                 <View position="absolute" top={0} right={0} zIndex={10}>
-                  <ParamsTable />
+                  {selectedGraph === 'graph1' ? (
+                    <>
+                      <ParamsTable />
+                    </>
+                  ) : (
+                    <>
+                      <YStack
+                        width={260}
+                        borderRadius={8}
+                        gap={16}
+                        padding={16}
+                        backgroundColor="$background"
+                        borderWidth={1}
+                        borderColor="$borderColor"
+                      >
+                        <DataTable
+                          title="Blast Parameters"
+                          data={[
+                            { Height: '15.00 mm' },
+                            { Burden: '8452 kg' },
+                            { 'Rock Factor': 10.23 },
+                            { accuracy: 45.0 },
+                            { Strength: '15.00' },
+                            { Density: 710.25 },
+                          ]}
+                        />
+                      </YStack>
+                    </>
+                  )}
                 </View>
               </YStack>
 
