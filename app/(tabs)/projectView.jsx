@@ -4,10 +4,14 @@ import { ArrowLeft } from '@tamagui/lucide-icons';
 import Header from '../../components/common/Header';
 import { Trash, Upload, Plus } from '@tamagui/lucide-icons'
 import { View, ScrollView } from 'react-native'
+import * as ImagePicker from 'expo-image-picker'
+import { useState } from 'react';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 
 const ProjectView = () => {
   const router = useRouter();
   const { id, name, desc, updated } = useLocalSearchParams();
+  const [imageUri, setImageUri] = useState(null);
 
   const handleBack = () => {
     router.push('/');
@@ -19,6 +23,34 @@ const ProjectView = () => {
     timestamp: 'Uploaded 17 hrs ago',
     uri: 'https://via.placeholder.com/150', // Replace with real image URLs
   }))
+
+  const pickImage = async () => {
+      const result = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ImagePicker.MediaTypeOptions.Images })
+      if (!result.canceled) {
+        setImage(result.assets[0].uri)
+      }
+    }
+     const handleCapture = () => {
+    launchCamera(
+      {
+        mediaType: 'photo',
+        cameraType: 'back',
+        saveToPhotos: true,
+      },
+      response => {
+        if (response.didCancel) {
+          console.log('User cancelled camera')
+        } else if (response.errorCode) {
+          console.error('Camera error: ', response.errorMessage)
+        } else {
+          const uri = response.assets?.[0]?.uri
+          if (uri) {
+            setImageUri(uri)
+          }
+        }
+      }
+    )
+  }
 
   return (
     <>
@@ -49,7 +81,7 @@ const ProjectView = () => {
               size="$3"
               borderRadius="$4"
               paddingHorizontal="$4"
-            >Add Image</Button>
+              onPress={handleCapture}>Add Image</Button>
             <Button
               theme="blue"
               variant="outlined"
@@ -58,12 +90,13 @@ const ProjectView = () => {
               icon={Upload}
               size="$3"
               borderRadius="$4"
-              paddingHorizontal="$4">Upload Image</Button>
+              paddingHorizontal="$4"
+              onPress={pickImage}>Upload Image</Button>
           </XStack>
         </XStack>
 
         {/* Image Grid */}
-        <ScrollView contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap' }} style={{ maxHeight: '80%' }}>
+        <ScrollView contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap' }} style={{ maxHeight: '100%' }}>
           {images.map((img) => (
             <Card key={img.id} width={180} margin="$2" elevate bordered>
               <YStack>

@@ -99,15 +99,25 @@ export default function ProjectLists({ query }) {
           <XStack padding="$3" justifyContent="space-between" alignItems="center" backgroundColor="white">
             <Text color="$textSecondary" fontSize="$4">Items per page {ITEMS_PER_PAGE}</Text>
             <Text color="$textSecondary" fontSize="$4">
-              {Math.min((page - 1) * ITEMS_PER_PAGE + 1, totalItems)} -
-              {Math.min(page * ITEMS_PER_PAGE, totalItems)} of {totalItems} Items
+              {`${Math.min((page - 1) * ITEMS_PER_PAGE + 1, totalItems)} - ${Math.min(page * ITEMS_PER_PAGE, totalItems)} of ${totalItems} Items`}
             </Text>
             <XStack alignItems="center" gap="$2">
-              <Button size="$2" variant="outlined" onPress={() => setPage(1)} disabled={page === 1}>≪</Button>
-              <Button size="$2" variant="outlined" onPress={handlePrev} disabled={page === 1}>‹</Button>
-              <Button size="$2" variant="active">{page}</Button>
-              <Button size="$2" variant="outlined" onPress={handleNext} disabled={page === totalPages}>›</Button>
-              <Button size="$2" variant="outlined" onPress={() => setPage(totalPages)} disabled={page === totalPages}>≫</Button>
+              <Button size="$2" variant="outlined" onPress={() => setPage(1)} disabled={page === 1}>
+                <Text>≪</Text>
+              </Button>
+              <Button size="$2" variant="outlined" onPress={handlePrev} disabled={page === 1}>
+                <Text>‹</Text>
+              </Button>
+              <Button size="$2" variant="active">
+                <Text>{page}</Text>
+              </Button>
+              <Button size="$2" variant="outlined" onPress={handleNext} disabled={page === totalPages}>
+                <Text>›</Text>
+              </Button>
+              <Button size="$2" variant="outlined" onPress={() => setPage(totalPages)} disabled={page === totalPages}>
+                <Text>≫</Text>
+              </Button>
+
             </XStack>
           </XStack>
         </XStack>
