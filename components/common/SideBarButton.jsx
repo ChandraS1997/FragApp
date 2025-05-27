@@ -16,16 +16,16 @@ const SidebarButton = forwardRef(
     const backgroundColor = isActive ? '$primary' : '$bg';
 
     return (
-      <YStack alignItems="center" gap={5}>
+      <YStack alignItems="center" gap={5} width={40}>
         <Button
           ref={ref}
           {...props}
-          padding={6}
-          paddingVertical={6}
+          padding={10}
+          paddingVertical={10}
           borderRadius={6}
           borderWidth={1}
-          height={30}
-          width={30}
+          height={40}
+          width={40}
           color="$primary"
           borderColor="$borderColor"
           backgroundColor={backgroundColor}
@@ -39,7 +39,7 @@ const SidebarButton = forwardRef(
         </Button>
 
         {label && (
-          <Text fontSize={10} color="$textSecondary" textAlign="center">
+          <Text fontSize={12} color="$textSecondary" textAlign="center">
             {label}
           </Text>
         )}

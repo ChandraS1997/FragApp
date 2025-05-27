@@ -1,8 +1,7 @@
 import CustomPopover from './CustomPopover';
 import SidebarButton from './SideBarButton';
-import { Check } from '@tamagui/lucide-icons';
 import { XStack, YStack } from 'tamagui';
-import { AlertTriangle, Scale3d, ZapOff, MoveRight } from '@tamagui/lucide-icons';
+import ReportIcon from '../../assets/icons/reports.svg';
 
 const Result = ({ handleMetricPress }) => {
   return (
@@ -10,7 +9,7 @@ const Result = ({ handleMetricPress }) => {
       <CustomPopover
         trigger={
           <SidebarButton
-            icon={Check}
+            icon={ReportIcon}
             label="Result"
             hoverColor="$primary"
             defaultColor="$primary"
@@ -26,37 +25,37 @@ export default Result;
 const ResultContent = ({ handleMetricPress }) => {
   return (
     <>
-      <YStack gap={8} width={60} padding={16}>
-        <YStack gap={8}>
+      <YStack gap={8} padding={16}>
+        <XStack gap={8}>
           <SidebarButton
-            icon={MoveRight}
+            icon={ReportIcon}
             label="Throw"
             hoverColor="$primary"
             defaultColor="$primary"
             onPress={() => handleMetricPress('13 m')}
           />
           <SidebarButton
-            icon={ZapOff}
+            icon={ReportIcon}
             label="Back Break"
             hoverColor="$primary"
             defaultColor="$primary"
             onPress={() => handleMetricPress('2 m')}
           />
           <SidebarButton
-            icon={Scale3d}
+            icon={ReportIcon}
             label="Powder Factor"
             hoverColor="$primary"
             defaultColor="$primary"
             onPress={() => handleMetricPress('1.6 m³/ton')}
           />
           <SidebarButton
-            icon={AlertTriangle}
+            icon={ReportIcon}
             label="Fly Rock"
             hoverColor="$primary"
             defaultColor="$primary"
             onPress={() => handleMetricPress('30 m')}
           />
-        </YStack>
+        </XStack>
       </YStack>
     </>
   );

@@ -25,6 +25,8 @@ const SidebarGraph = ({ onSwitchSidebar, selectedGraph, onSelectGraph }) => {
         borderWidth={1}
         borderColor="$borderColor"
         padding={16}
+        justifyContent="center"
+        alignItems="center"
       >
         <YStack f={1} justifyContent="space-between">
           {/* Top Buttons */}

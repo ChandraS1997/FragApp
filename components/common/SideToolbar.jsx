@@ -1,4 +1,4 @@
-import { Separator, YStack } from 'tamagui';
+import { Separator, XStack, YStack } from 'tamagui';
 import Scale from '../../components/common/Scale';
 import Edit from '../../components/common/Edit';
 import Logic from '../../components/common/Logic';
@@ -6,22 +6,35 @@ import Color from '../../components/common/Color';
 import SidebarButton from './SideBarButton';
 import Graph from '../../assets/icons/graph.svg';
 import AutoDetect from '../../assets/icons/autoDetect.svg';
-import { Grid, Package } from '@tamagui/lucide-icons';
+import CustomPopover from './CustomPopover';
+import DataIcon from '../../assets/icons/data.svg';
+import HeatMapIcon from '../../assets/icons/heatMap.svg';
+import MuckpileIcon from '../../assets/icons/muckpile.svg';
 
 const SideToolbar = ({ onSwitchSidebar }) => {
   return (
-    <YStack width={85} backgroundColor="$bg" padding={20} justifyContent="space-between">
+    <YStack
+      width={85}
+      backgroundColor="$bg"
+      padding={20}
+      justifyContent="space-between"
+      alignItems="center"
+    >
       <YStack gap={10}>
         <Scale />
         <Logic />
         <Edit />
         <Color />
-        <SidebarButton icon={Grid} label="Heatmaps" hoverColor="$primary" defaultColor="$primary" />
-        <SidebarButton
-          icon={Package}
-          label="Muckpile"
-          hoverColor="$primary"
-          defaultColor="$primary"
+        <CustomPopover
+          trigger={<SidebarButton icon={DataIcon} label="Data" />}
+          content={
+            <>
+              <XStack gap={16} padding={16}>
+                <SidebarButton icon={HeatMapIcon} label="HeatMap" />
+                <SidebarButton icon={MuckpileIcon} label="Muckpile" />
+              </XStack>
+            </>
+          }
         />
         <Separator />
         <SidebarButton icon={AutoDetect} label="Auto Detect" />
