@@ -3,6 +3,9 @@ import { Popover } from 'tamagui';
 
 const CustomPopover = ({ trigger, content }) => {
   const [open, setOpen] = useState(false);
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <Popover
       open={open}
@@ -10,7 +13,7 @@ const CustomPopover = ({ trigger, content }) => {
       placement="right-start"
       stayInFrame
       allowFlip
-      offset={25}
+      offset={35}
       trapFocus
       allowEscape={false}
       closeOnOutsidePress={false}
@@ -21,7 +24,8 @@ const CustomPopover = ({ trigger, content }) => {
       <Popover.Content
         borderRadius={8}
         elevate
-        padding="$3"
+        // padding="$3"
+        padding={0}
         offset={100}
         enterStyle={{ y: -10, opacity: 0 }}
         exitStyle={{ y: -10, opacity: 0 }}
@@ -32,7 +36,7 @@ const CustomPopover = ({ trigger, content }) => {
         // minWidth={200}
       >
         <Popover.Arrow size={25} backgroundColor="$bg" borderWidth={1} borderColor="$borderColor" />
-        {content}
+        {typeof content === 'function' ? content({ onClose: handleClose }) : content}
       </Popover.Content>
     </Popover>
   );
