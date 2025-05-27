@@ -11,7 +11,7 @@ const Logic = () => {
   return (
     <>
       <CustomPopover
-        trigger={<SidebarButton icon={LogicIcon} label="Logic" />}
+        trigger={<SidebarButton icon={LogicIcon} label="Logic" defaultColor="$primary" />}
         content={<LogicContent />}
       />
     </>

@@ -2,6 +2,7 @@ import { Text, XStack, YStack } from 'tamagui';
 import { LabeledSlider } from './EditParameters';
 import { ArrowLeft } from '@tamagui/lucide-icons';
 import { DualButton } from './DualButton';
+import SwitchWithLabel from './SwitchWithLabel';
 
 const EditImage = ({ onClose }) => {
   const handleCancel = () => {
@@ -23,7 +24,7 @@ const EditImage = ({ onClose }) => {
       shadowOpacity={0.2}
       shadowRadius={4}
       $platform-web={{
-        boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)', // Web shadow
+        boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
       }}
     >
       <XStack
@@ -37,10 +38,12 @@ const EditImage = ({ onClose }) => {
         <Text color="$textColor">Edit Image</Text>
       </XStack>
       <YStack borderBottomWidth={1} borderBottomColor="$borderColor" paddingVertical={16} gap={16}>
+        <XStack justifyContent="space-between" alignItems="center">
+          <SwitchWithLabel label="Noise" size="$2" defaultChecked={true} />
+          <SwitchWithLabel label="Grayscale" size="$2" defaultChecked={false} />
+        </XStack>
         <LabeledSlider label="Brightness" defaultValue={2.3} />
-        <LabeledSlider label="Noise" defaultValue={2.3} />
         <LabeledSlider label="Contrast" defaultValue={2.3} />
-        <LabeledSlider label="Grayscale" defaultValue={2.3} />
       </YStack>
       <YStack paddingTop={16}>
         <DualButton onCancel={handleCancel} onApply={handleApply} />
