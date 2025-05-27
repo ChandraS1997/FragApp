@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { ToggleGroup } from 'tamagui';
 import { Feather } from '@expo/vector-icons';
 
-const ListGridBtn = ({viewMode, setViewMode}) => {
-   // always starts with a value
+const ListGridBtn = ({ viewMode, setViewMode }) => {
+  // always starts with a value
 
   return (
     <ToggleGroup
@@ -20,8 +20,9 @@ const ListGridBtn = ({viewMode, setViewMode}) => {
       <ToggleGroup.Item
         value="list"
         aria-label="List View"
-        hoverTheme={false}
-        pressTheme={false}
+        focusStyle={{ backgroundColor: '$bg' }}
+        hoverStyle={{ backgroundColor: '$bg' }}
+        pressStyle={{ backgroundColor: '$bg' }}
         paddingHorizontal="$4"
         backgroundColor="$bg"
       >
@@ -31,8 +32,9 @@ const ListGridBtn = ({viewMode, setViewMode}) => {
       <ToggleGroup.Item
         value="grid"
         aria-label="Grid View"
-        hoverTheme={false}
-        pressTheme={false}
+        focusStyle={{ backgroundColor: '$bg' }}
+        hoverStyle={{ backgroundColor: '$bg' }}
+        pressStyle={{ backgroundColor: '$bg' }}
         paddingHorizontal="$4"
         backgroundColor="$bg"
       >

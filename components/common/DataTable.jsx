@@ -60,7 +60,7 @@ const DataTable = ({ title, data = [], icon: Icon, PopoverComponent }) => {
               <Text color="$textSecondary" fontWeight="400" width="45%" size={14}>
                 {key}
               </Text>
-              <Text color="$gray10" width="5%" textAlign="center" size={14}>
+              <Text color="$textSecondary" width="5%" textAlign="center" size={14}>
                 :
               </Text>
               <Text color="$textColor" width="45%" textAlign="left" size={14}>
