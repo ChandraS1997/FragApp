@@ -20,7 +20,7 @@ export default Scale;
 const ScalingContent = () => {
   return (
     <>
-      <YStack gap={8} padding={1} width={288}>
+      <YStack gap={8} padding={16} width={288}>
         <XStack justifyContent="space-between">
           <SwitchWithLabel label="Dual" size="$2" defaultChecked={false} />
           <SwitchWithLabel label="Ignore" size="$2" defaultChecked={false} />

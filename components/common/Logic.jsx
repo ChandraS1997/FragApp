@@ -23,7 +23,7 @@ const LogicContent = () => {
   const [value, setValue] = useState(50);
   return (
     <>
-      <YStack width={288} gap={8}>
+      <YStack width={288} gap={8} padding={16}>
         <SwitchWithLabel label="Advance" size="$2" defaultChecked={false} />
         <YStack justifyContent="space-between">
           <Label size={14} color="$textSecondary">

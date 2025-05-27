@@ -18,7 +18,7 @@ export default Color;
 const ColorContent = () => {
   return (
     <>
-      <YStack gap={16}>
+      <YStack gap={16} padding={16}>
         <XStack width={205} height={32} justifyContent="space-between">
           <Label color="$textSecondary" size={14}>
             Color ID 1

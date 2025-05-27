@@ -18,7 +18,14 @@ const Edit = () => {
   return (
     <>
       <CustomPopover
-        trigger={<SidebarButton icon={EditIcon} label="Edit" />}
+        trigger={
+          <SidebarButton
+            icon={EditIcon}
+            label="Edit"
+            hoverColor="$primary"
+            defaultColor="$primary"
+          />
+        }
         content={<EditContent />}
       />
     </>
@@ -29,7 +36,7 @@ export default Edit;
 const EditContent = () => {
   return (
     <>
-      <YStack gap={16}>
+      <YStack gap={16} padding={16}>
         <XStack gap={16}>
           <IconTool svgIcon={draw} label="Free Draw" />
           <IconTool svgIcon={line} label="Line Draw" />
