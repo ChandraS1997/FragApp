@@ -3,10 +3,9 @@ import { YStack } from 'tamagui';
 import SidebarButton from './SideBarButton';
 import GraphIcon from '../../assets/icons/graph.svg';
 import Graph2Icon from '../../assets/icons/graph2.svg';
-import CsvIcon from '../../assets/icons/csv.svg';
-import PngIcon from '../../assets/icons/png.svg';
-import PdfIcon from '../../assets/icons/pdf.svg';
 import ResultModal from './ResultModal';
+import Export from './Export';
+import Result from './Result';
 
 const SidebarGraph = ({ onSwitchSidebar, selectedGraph, onSelectGraph }) => {
   // const [selectedGraph, setSelectedGraph] = useState('graph1');
@@ -53,45 +52,12 @@ const SidebarGraph = ({ onSwitchSidebar, selectedGraph, onSelectGraph }) => {
 
             {/* Graph Metric Buttons (trigger modal) */}
             <YStack gap={10} pb={10} borderBottomWidth={1} borderBottomColor="$borderColor">
-              <SidebarButton
-                icon={Graph2Icon}
-                label="Throw"
-                size={12}
-                hoverColor="$primary"
-                defaultColor="$primary"
-                onPress={() => handleMetricPress('13 m')}
-              />
-              <SidebarButton
-                icon={Graph2Icon}
-                label="Back Break"
-                size={12}
-                hoverColor="$primary"
-                defaultColor="$primary"
-                onPress={() => handleMetricPress('2 m')}
-              />
-              <SidebarButton
-                icon={Graph2Icon}
-                label="Powder Factor"
-                size={12}
-                hoverColor="$primary"
-                defaultColor="$primary"
-                onPress={() => handleMetricPress('1.6 m³/ton')}
-              />
-              <SidebarButton
-                icon={Graph2Icon}
-                label="Fly Rock"
-                size={12}
-                hoverColor="$primary"
-                defaultColor="$primary"
-                onPress={() => handleMetricPress('30 m')}
-              />
+              <Result handleMetricPress={handleMetricPress} />
             </YStack>
 
             {/* Export Buttons */}
             <YStack gap={10}>
-              <SidebarButton icon={CsvIcon} label="Export CSV" size={12} />
-              <SidebarButton icon={PngIcon} label="Export PNG" size={12} />
-              <SidebarButton icon={PdfIcon} label="Export PDF" size={12} />
+              <Export />
             </YStack>
           </YStack>
 
