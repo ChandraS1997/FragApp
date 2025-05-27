@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Database } from '@tamagui/lucide-icons';
 import AntDesign from '@expo/vector-icons/AntDesign';
-import { Popover, Button, XStack, YStack, Separator, Adapt, Sheet, Label } from 'tamagui';
+import { Popover, Button, XStack, YStack, Separator, Label } from 'tamagui';
 import { DualButton } from './DualButton';
 
 const DatabaseSync = () => {
@@ -34,23 +34,17 @@ const DatabaseSync = () => {
     >
       <Popover.Trigger asChild>
         <Button
-          icon={Database}
+          size="$6"
           width={60}
           height={60}
+          chromeless
           paddingHorizontal={10}
+          color="$primary"
           paddingVertical={0}
           borderRadius="$0"
-          size="$5"
-          backgroundColor="$bg"
-          color="$primary"
-          onPress={() => setOpen(true)}
-          hoverStyle={{
-            backgroundColor: '$hoverLight',
-            border: '$0',
-          }}
-          pressStyle={{
-            backgroundColor: '$hoverLight',
-          }}
+          icon={Database}
+          hoverStyle={{ backgroundColor: '$hoverLight' }}
+          pressStyle={{ backgroundColor: '$hoverLight' }}
         />
       </Popover.Trigger>
 
