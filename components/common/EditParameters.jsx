@@ -83,7 +83,7 @@ const EditParameters = ({ onClose }) => {
 
 export default EditParameters;
 
-const LabeledSlider = ({ label, defaultValue = 2.3 }) => {
+export const LabeledSlider = ({ label, defaultValue = 2.3 }) => {
   const [value, setValue] = useState(defaultValue);
 
   return (
