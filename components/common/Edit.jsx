@@ -21,7 +21,7 @@ const Edit = () => {
         trigger={
           <SidebarButton
             icon={EditIcon}
-            label="Edit"
+            label="MarkUp Tools"
             hoverColor="$primary"
             defaultColor="$primary"
           />
