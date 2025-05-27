@@ -2,10 +2,7 @@ import { forwardRef, useState } from 'react';
 import { Button, Text, YStack } from 'tamagui';
 
 const SidebarButton = forwardRef(
-  (
-    { icon: Icon, label, size = 24, hoverColor, defaultColor, isActive = false, onPress, ...props },
-    ref
-  ) => {
+  ({ icon: Icon, label, hoverColor, defaultColor, isActive = false, onPress, ...props }, ref) => {
     const [isHovered, setIsHovered] = useState(false);
 
     // Set icon color
