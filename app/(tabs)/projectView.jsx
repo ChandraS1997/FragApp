@@ -6,6 +6,7 @@ import { ScrollView, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { useState } from 'react';
 import { launchCamera } from 'react-native-image-picker';
+import { X, Check as CrossIcon } from '@tamagui/lucide-icons';
 
 const ProjectView = () => {
   const router = useRouter();
@@ -70,7 +71,6 @@ const ProjectView = () => {
     setMergeMode(!mergeMode);
     if (!mergeMode) {
       setImages(prev => prev.map(img => ({ ...img, isSelected: false })));
-      
     }
   };
 
@@ -103,22 +103,79 @@ const ProjectView = () => {
           </XStack>
 
           <XStack space="$2" marginLeft="auto">
-            <Button
-              theme="blue"
-              variant="outlined"
-              size="$3"
-              borderRadius="$4"
-              onPress={toggleMergeMode}
-            >
-              Merge Analysis
-            </Button>
+            {!mergeMode ? (
+              <Button
+                theme="blue"
+                variant="outlined"
+                icon={CheckIcon}
+                size="$3"
+                height={40}
+                color="$primary"
+                borderRadius={8}
+                borderWidth={1}
+                borderColor="$primary"
+                backgroundColor="$bg"
+                hoverStyle={{ backgroundColor: '$hoverBackground' }}
+                pressStyle={{ backgroundColor: '$hoverBackground' }}
+                onPress={toggleMergeMode}
+              >
+                Merge Analysis
+              </Button>
+            ) : (
+              <>
+                <XStack gap={16} alignItems="center">
+                  <Button
+                    variant="outlined"
+                    icon={() => <X size={18} color="#267EF9" />}
+                    size="$3"
+                    height={40}
+                    borderRadius={8}
+                    borderWidth={1}
+                    color="primary"
+                    borderColor="$primary"
+                    backgroundColor="$bg"
+                    hoverStyle={{ backgroundColor: '$hoverBackground' }}
+                    pressStyle={{ backgroundColor: '$hoverBackground' }}
+                    onPress={() => {
+                      setMergeMode(false);
+                      setImages(prev => prev.map(img => ({ ...img, isSelected: false })));
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    theme="blue"
+                    icon={CheckIcon}
+                    size="$3"
+                    height={40}
+                    color="$bg"
+                    borderRadius={8}
+                    borderWidth={1}
+                    borderColor="$primary"
+                    backgroundColor="$primary"
+                    hoverStyle={{ backgroundColor: '$primary' }}
+                    pressStyle={{ backgroundColor: '$primary' }}
+                    onPress={toggleMergeMode}
+                  >
+                    Apply Merge
+                  </Button>
+                </XStack>
+              </>
+            )}
 
             <Button
               theme="blue"
-              variant="outlined"
+              // variant="outlined"
               icon={Plus}
               size="$3"
-              borderRadius="$4"
+              height={40}
+              color="$primary"
+              borderRadius={8}
+              borderWidth={1}
+              borderColor="$primary"
+              backgroundColor="$bg"
+              hoverStyle={{ backgroundColor: '$hoverBackground' }}
+              pressStyle={{ backgroundColor: '$hoverBackground' }}
               onPress={handleCapture}
             >
               Add Image
@@ -129,7 +186,14 @@ const ProjectView = () => {
               variant="outlined"
               icon={Upload}
               size="$3"
-              borderRadius="$4"
+              height={40}
+              color="$primary"
+              borderRadius={8}
+              borderWidth={1}
+              borderColor="$primary"
+              backgroundColor="$bg"
+              hoverStyle={{ backgroundColor: '$hoverBackground' }}
+              pressStyle={{ backgroundColor: '$hoverBackground' }}
               onPress={pickImage}
             >
               Upload Image
