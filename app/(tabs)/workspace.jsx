@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import Header from '../../components/common/Header';
 import { XStack, Text, YStack, View } from 'tamagui';
@@ -127,12 +127,18 @@ const data = [
 
 const WorkSpace = () => {
   const router = useRouter();
+  const { id, name, mode } = useLocalSearchParams();
   const [sidebarMode, setSidebarMode] = useState('tools'); // 'tools' or 'graph'
-   const { id, name } = useLocalSearchParams();
   const [selectedGraph, setSelectedGraph] = useState('graph1');
   const handleBack = () => {
     router.push('/projectView');
   };
+
+  useEffect(() => {
+    if (mode === 'graph') {
+      setSidebarMode('graph');
+    }
+  }, [mode]);
 
   return (
     <YStack f={1}>
