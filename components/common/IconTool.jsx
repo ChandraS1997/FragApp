@@ -10,7 +10,7 @@ const IconTool = ({ svgIcon: SvgIcon, label }) => {
 
   return (
     <TooltipGroup delay={0}>
-      <Tooltip placement="bottom" offset={0}>
+      <Tooltip placement="bottom" offset={0} delay={0}>
         <Tooltip.Trigger>
           <Button
             width={44}
@@ -39,8 +39,8 @@ const IconTool = ({ svgIcon: SvgIcon, label }) => {
           y={0}
           opacity={1}
           py="$2"
-          delay={0}
           backgroundColor="$bg"
+          delay={0}
         >
           <Tooltip.Arrow size={10} backgroundColor="$bg" />
           <Paragraph size="$2" lineHeight="$1" color="$textColor">

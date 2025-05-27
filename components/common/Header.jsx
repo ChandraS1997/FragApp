@@ -18,7 +18,7 @@ const Header = ({ title }) => {
       <XStack alignItems="center" gap="$4">
         <Image source={logo} width={100} style={{ resizeMode: 'cover' }} />
 
-        <Text paddingHorizontal={16} fontSize={16} fontWeight="600">
+        <Text paddingHorizontal={16} fontSize={16} fontWeight="600" cursor="pointer">
           {title}
         </Text>
       </XStack>
