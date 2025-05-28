@@ -7,7 +7,7 @@ import ConnectionBtn from './ConnectionBtn';
 const Header = ({ title }) => {
   return (
     <XStack
-      bg="$bg"
+      bg="$darkPrimary"
       alignItems="center"
       justifyContent="space-between"
       borderBottomWidth={1}
@@ -18,7 +18,7 @@ const Header = ({ title }) => {
       <XStack alignItems="center" gap="$4">
         <Image source={logo} width={100} style={{ resizeMode: 'cover' }} />
 
-        <Text paddingHorizontal={16} fontSize={16} fontWeight="600" cursor="pointer">
+        <Text paddingHorizontal={16} fontSize={16} fontWeight="600" cursor="pointer" color="$bg">
           {title}
         </Text>
       </XStack>

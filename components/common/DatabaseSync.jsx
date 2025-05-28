@@ -39,12 +39,12 @@ const DatabaseSync = () => {
           height={60}
           chromeless
           paddingHorizontal={10}
-          color="$primary"
+          color="$bg"
           paddingVertical={0}
           borderRadius="$0"
           icon={Database}
-          hoverStyle={{ backgroundColor: '$hoverLight' }}
-          pressStyle={{ backgroundColor: '$hoverLight' }}
+          hoverStyle={{ backgroundColor: '$primary' }}
+          pressStyle={{ backgroundColor: '$primary' }}
         />
       </Popover.Trigger>
 

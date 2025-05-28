@@ -42,39 +42,33 @@ const LanguageSelector = () => {
   return (
     <Popover open={open} onOpenChange={setOpen} placement="bottom-end">
       <PopoverAnchor>
-        <XStack gap={1} alignItems="center" backgroundColor="$bg" flexGrow={1}>
+        <XStack gap={1} alignItems="center" flexGrow={1}>
           <Text
             // width={90}
             paddingVertical={8}
             paddingRight={4}
             paddingLeft={16}
             onPress={() => setOpen(true)}
-            color="$textSecondary"
-            backgroundColor="$bg"
-            hoverStyle={{ color: '$primary' }}
+            color="$bg"
+            hoverStyle={{ color: '$bg' }}
           >
             Language
           </Text>
 
           <Button
-            backgroundColor="$bg"
+            backgroundColor="$darkPrimary"
             onPress={() => setOpen(prev => !prev)}
             justifyContent="flex-start"
             borderWidth={0}
             borderRadius={0}
             paddingRight={0}
-            pressStyle={{ backgroundColor: '$bg' }}
-            hoverStyle={{ backgroundColor: '$bg' }}
-            focusStyle={{ backgroundColor: '$bg' }}
+            pressStyle={{ backgroundColor: '$darkPrimary' }}
+            hoverStyle={{ backgroundColor: '$darkPrimary' }}
+            focusStyle={{ backgroundColor: '$darkPrimary' }}
           >
             <XStack paddingVertical={8} paddingRight={16} alignItems="center" gap={8} flexGrow={1}>
               <FlagIcon countryCode={selected.countryCode} emoji={selected.emoji} />
-              <Text
-                color="$textSecondary"
-                hoverStyle={{ color: '$primary' }}
-                fontWeight={400}
-                size={14}
-              >
+              <Text color="$bg" hoverStyle={{ color: '$bg' }} fontWeight={400} size={14}>
                 {selected.label}
               </Text>
             </XStack>

@@ -145,8 +145,8 @@ const WorkSpace = () => {
       <Header
         title={
           <XStack alignItems="center">
-            <ArrowLeft size={20} onPress={handleBack} style={{ cursor: 'pointer' }} />
-            <Text color="$primary" paddingLeft={10}>
+            <ArrowLeft size={20} onPress={handleBack} style={{ cursor: 'pointer' }} color="$bg" />
+            <Text color="$bg" paddingLeft={10}>
               {id}
             </Text>
             <Text>/{name}</Text>

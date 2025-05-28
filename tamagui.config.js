@@ -9,6 +9,7 @@ const tokens = createTokens({
 
     // Functional colors
     primary: '#267EF9',
+    darkPrimary: '#1E419F',
     danger: '#ef4444',
     success: '#22c55e',
     warning: '#facc15',
@@ -46,6 +47,7 @@ const themes = {
     textSecondary: tokens.color.textSecondaryLight,
     borderColor: tokens.color.borderLight,
     primary: tokens.color.primary,
+    darkPrimary: tokens.color.darkPrimary,
     danger: tokens.color.danger,
     hoverBackground: tokens.color.hoverLight,
   },
@@ -56,6 +58,8 @@ const themes = {
     textSecondary: tokens.color.textSecondaryDark,
     borderColor: tokens.color.borderDark,
     primary: tokens.color.primary,
+    darkPrimary: tokens.color.darkPrimary,
+
     danger: tokens.color.danger,
     hoverBackground: tokens.color.hoverLight,
   },

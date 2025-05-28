@@ -4,7 +4,7 @@ import { useState } from 'react';
 import CreateProjectModal from './NewProject';
 
 const CreateProject = () => {
-  const [isModalOpen, setModalOpen] = useState(false)
+  const [isModalOpen, setModalOpen] = useState(false);
   return (
     <YStack flex={1}>
       <Button
@@ -29,7 +29,6 @@ const CreateProject = () => {
       </Button>
       <CreateProjectModal open={isModalOpen} onOpenChange={setModalOpen} />
     </YStack>
-
   );
 };
 

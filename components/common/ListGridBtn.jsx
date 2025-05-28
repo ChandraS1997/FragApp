@@ -20,25 +20,25 @@ const ListGridBtn = ({ viewMode, setViewMode }) => {
       <ToggleGroup.Item
         value="list"
         aria-label="List View"
-        focusStyle={{ backgroundColor: '$bg' }}
-        hoverStyle={{ backgroundColor: '$bg' }}
-        pressStyle={{ backgroundColor: '$bg' }}
+        focusStyle={viewMode === 'grid' ? {} : { backgroundColor: '$darkPrimary' }}
+        hoverStyle={viewMode === 'grid' ? {} : { backgroundColor: '$darkPrimary' }}
+        pressStyle={viewMode === 'grid' ? {} : { backgroundColor: '$darkPrimary' }}
         paddingHorizontal="$4"
-        backgroundColor="$bg"
+        backgroundColor={viewMode === 'list' ? '$darkPrimary' : '$bg'}
       >
-        <Feather name="list" size={20} color={viewMode === 'list' ? '#007aff' : '#999'} />
+        <Feather name="list" size={20} color={viewMode === 'list' ? '#ffffff' : '#999'} />
       </ToggleGroup.Item>
 
       <ToggleGroup.Item
         value="grid"
         aria-label="Grid View"
-        focusStyle={{ backgroundColor: '$bg' }}
-        hoverStyle={{ backgroundColor: '$bg' }}
-        pressStyle={{ backgroundColor: '$bg' }}
+        hoverStyle={viewMode === 'list' ? {} : { backgroundColor: '$darkPrimary' }}
+        focusStyle={viewMode === 'list' ? {} : { backgroundColor: '$darkPrimary' }}
+        pressStyle={viewMode === 'list' ? {} : { backgroundColor: '$darkPrimary' }}
         paddingHorizontal="$4"
-        backgroundColor="$bg"
+        backgroundColor={viewMode === 'grid' ? '$darkPrimary' : '$bg'}
       >
-        <Feather name="grid" size={20} color={viewMode === 'grid' ? '#007aff' : '#999'} />
+        <Feather name="grid" size={20} color={viewMode === 'grid' ? '#ffffff' : '#999'} />
       </ToggleGroup.Item>
     </ToggleGroup>
   );

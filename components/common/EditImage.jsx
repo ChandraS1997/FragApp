@@ -16,7 +16,6 @@ const EditImage = ({ onClose }) => {
   return (
     <YStack
       width={320}
-      padding={16}
       backgroundColor="$bg"
       borderRadius={8}
       shadowColor="black"
@@ -29,15 +28,18 @@ const EditImage = ({ onClose }) => {
     >
       <XStack
         alignItems="center"
-        paddingBottom={16}
+        backgroundColor="$darkPrimary"
+        padding={16}
+        borderTopLeftRadius={8}
+        borderTopRightRadius={8}
         borderBottomWidth={1}
         borderColor="$borderColor"
         gap={8}
       >
-        <ArrowLeft size={20} onPress={onClose} style={{ cursor: 'pointer' }} />
-        <Text color="$textColor">Edit Image</Text>
+        <ArrowLeft size={20} color="$bg" onPress={onClose} style={{ cursor: 'pointer' }} />
+        <Text color="$bg">Edit Image</Text>
       </XStack>
-      <YStack borderBottomWidth={1} borderBottomColor="$borderColor" paddingVertical={16} gap={16}>
+      <YStack borderBottomWidth={1} borderBottomColor="$borderColor" padding={16} gap={16}>
         <XStack justifyContent="space-between" alignItems="center">
           <SwitchWithLabel label="Noise" size="$2" defaultChecked={true} />
           <SwitchWithLabel label="Grayscale" size="$2" defaultChecked={false} />
@@ -45,7 +47,7 @@ const EditImage = ({ onClose }) => {
         <LabeledSlider label="Brightness" defaultValue={2.3} />
         <LabeledSlider label="Contrast" defaultValue={2.3} />
       </YStack>
-      <YStack paddingTop={16}>
+      <YStack padding={16}>
         <DualButton onCancel={handleCancel} onApply={handleApply} />
       </YStack>
     </YStack>

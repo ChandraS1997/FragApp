@@ -23,7 +23,6 @@ const EditParameters = ({ onClose }) => {
     <>
       <YStack
         width={320}
-        padding={16}
         backgroundColor="$bg"
         borderRadius={8}
         shadowColor="black"
@@ -36,13 +35,17 @@ const EditParameters = ({ onClose }) => {
       >
         <XStack
           alignItems="center"
+          padding={16}
+          borderTopLeftRadius={8}
+          borderTopRightRadius={8}
           paddingBottom={16}
           borderBottomWidth={1}
+          backgroundColor="$darkPrimary"
           borderColor="$borderColor"
           gap={8}
         >
-          <ArrowLeft size={20} onPress={onClose} style={{ cursor: 'pointer' }} />
-          <Text color="$textColor">Edit parameters</Text>
+          <ArrowLeft size={20} color="$bg" onPress={onClose} style={{ cursor: 'pointer' }} />
+          <Text color="$bg">Edit parameters</Text>
         </XStack>
 
         <ScrollView style={{ maxHeight }} showsVerticalScrollIndicator={false}>
@@ -51,6 +54,7 @@ const EditParameters = ({ onClose }) => {
             borderBottomColor="$borderColor"
             paddingVertical={16}
             gap={16}
+            padding={16}
           >
             <YStack gap={16} width={148}>
               <Text color="$textSecondary">Blast parameters</Text>
@@ -80,7 +84,7 @@ const EditParameters = ({ onClose }) => {
           </YStack>
         </ScrollView>
 
-        <YStack paddingTop={16}>
+        <YStack padding={16}>
           <DualButton onCancel={handleCancel} onApply={handleApply} />
         </YStack>
       </YStack>

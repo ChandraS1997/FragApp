@@ -16,8 +16,8 @@ const ConnectionBtn = props => {
       paddingVertical={0}
       borderRadius="$0"
       icon={SvgIcon}
-      hoverStyle={{ backgroundColor: '$bg' }}
-      pressStyle={{ backgroundColor: '$bg' }}
+      hoverStyle={{ backgroundColor: '$darkPrimary' }}
+      pressStyle={{ backgroundColor: '$darkPrimary' }}
     />
   );
 
