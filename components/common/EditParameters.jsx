@@ -4,10 +4,12 @@ import SwitchWithLabel from './SwitchWithLabel';
 import AskIcon from '../../assets/icons/ask.svg';
 import { useState } from 'react';
 import SliderNative from '@react-native-community/slider';
-import { TextInput, ScrollView, Platform } from 'react-native';
+import { TextInput, ScrollView, Platform, Dimensions } from 'react-native';
 import { DualButton } from './DualButton';
 
 const EditParameters = ({ onClose }) => {
+  const screenHeight = Dimensions.get('window').height;
+  const maxHeight = screenHeight * 0.5; // Use 50% of the screen height
   const handleCancel = () => {
     onClose();
   };
@@ -43,7 +45,7 @@ const EditParameters = ({ onClose }) => {
           <Text color="$textColor">Edit parameters</Text>
         </XStack>
 
-        <ScrollView style={{ maxHeight: 400 }} showsVerticalScrollIndicator={false}>
+        <ScrollView style={{ maxHeight }} showsVerticalScrollIndicator={false}>
           <YStack
             borderBottomWidth={1}
             borderBottomColor="$borderColor"
