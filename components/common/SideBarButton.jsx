@@ -1,18 +1,34 @@
 import { forwardRef, useState } from 'react';
-import { Button, Text, YStack } from 'tamagui';
+import { Button, Text, useTheme, YStack } from 'tamagui';
 
 const SidebarButton = forwardRef(
-  ({ icon: Icon, label, hoverColor, defaultColor, isActive = false, onPress, ...props }, ref) => {
+  (
+    {
+      icon: Icon,
+      label,
+      hoverColor = '$primary',
+      defaultColor = '$color',
+      isActive = false,
+      onPress,
+      ...props
+    },
+    ref
+  ) => {
     const [isHovered, setIsHovered] = useState(false);
+    const theme = useTheme();
 
-    // Set icon color
+    const resolveColor = token => {
+      if (!token) return '#888';
+      const key = token.startsWith('$') ? token.slice(1) : token;
+      return theme[key]?.val ?? token;
+    };
+
     const iconColor = isActive
       ? '#fff'
       : isHovered
-        ? hoverColor || '#267EF9'
-        : defaultColor || '#888';
+        ? resolveColor(hoverColor)
+        : resolveColor(defaultColor);
 
-    // Set background color
     const backgroundColor = isActive ? '$primary' : '$bg';
 
     return (
