@@ -135,7 +135,7 @@ export const LabeledSlider = ({ label, defaultValue = 2 }) => {
         ) : (
           <SliderNative
             value={value}
-            onValueChange={setValue}
+            onValueChange={val => setValue(parseFloat(val.toFixed(2)))}
             minimumValue={0}
             maximumValue={5}
             step={0.1}
