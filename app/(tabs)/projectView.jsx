@@ -1,12 +1,24 @@
 import { useRouter, useLocalSearchParams } from 'expo-router';
-import { XStack, Text, YStack, Input, Button, Image, Card, SizableText, Checkbox } from 'tamagui';
+import {
+  XStack,
+  Text,
+  YStack,
+  Input,
+  Button,
+  Image,
+  Card,
+  SizableText,
+  Checkbox,
+  Dialog,
+} from 'tamagui';
 import { ArrowLeft, Trash, Upload, Plus, Check as CheckIcon } from '@tamagui/lucide-icons';
 import Header from '../../components/common/Header';
-import { ScrollView, Alert } from 'react-native';
+import { ScrollView, Alert, TouchableOpacity } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { useState } from 'react';
 import { launchCamera } from 'react-native-image-picker';
 import { X, Check as CrossIcon } from '@tamagui/lucide-icons';
+import { TouchableWithoutFeedback } from 'react-native';
 
 const ProjectView = () => {
   const router = useRouter();
@@ -14,6 +26,7 @@ const ProjectView = () => {
 
   const [imageUri, setImageUri] = useState(null);
   const [mergeMode, setMergeMode] = useState(false);
+  const [showWarning, setShowWarning] = useState(false);
 
   const [images, setImages] = useState(
     new Array(12).fill(0).map((_, i) => ({
@@ -223,38 +236,39 @@ const ProjectView = () => {
               }}
             >
               <YStack>
-                {/* Checkbox top-left */}
                 {mergeMode && (
-                  <Checkbox
-                    checked={img.isSelected}
-                    onCheckedChange={() => handleCheckboxToggle(img)}
-                    disabled={!img.isAnalyzed}
-                    size="$3"
-                    backgroundColor={img.isSelected ? '$primary' : '$bg'}
-                    borderColor="$primary"
-                    borderWidth={2}
-                    color="$bg"
+                  <TouchableOpacity
+                    onPress={() => {
+                      if (!img.isAnalyzed) {
+                        setShowWarning(true); // Show dialog instead of alert
+                      } else {
+                        handleCheckboxToggle(img);
+                      }
+                    }}
                     style={{
-                      backgroundColor: img.isSelected ? '$primary' : '$bg',
                       position: 'absolute',
                       top: 8,
                       left: 8,
                       zIndex: 10,
                       opacity: img.isAnalyzed ? 1 : 0.4,
                     }}
-                    hoverStyle={{
-                      borderColor: '$primary',
-                      backgroundColor: '$bg',
-                    }}
-                    pressStyle={{
-                      backgroundColor: '$primary',
-                      borderColor: '$bg',
-                    }}
+                    activeOpacity={0.8}
+                    hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                   >
-                    <Checkbox.Indicator>
-                      <CheckIcon size={12} color={img.isSelected ? '$bg' : '$primary'} />
-                    </Checkbox.Indicator>
-                  </Checkbox>
+                    <Checkbox
+                      checked={img.isSelected}
+                      size="$3"
+                      backgroundColor={img.isSelected ? '$primary' : '$bg'}
+                      borderColor="$primary"
+                      borderWidth={2}
+                      color="$bg"
+                      pointerEvents="none"
+                    >
+                      <Checkbox.Indicator>
+                        <CheckIcon size={12} color={img.isSelected ? '$bg' : '$primary'} />
+                      </Checkbox.Indicator>
+                    </Checkbox>
+                  </TouchableOpacity>
                 )}
 
                 {/* Trash button */}
@@ -277,6 +291,30 @@ const ProjectView = () => {
           ))}
         </ScrollView>
       </YStack>
+
+      <Dialog open={showWarning} onOpenChange={setShowWarning}>
+        <Dialog.Portal>
+          <Dialog.Overlay />
+          <Dialog.Content elevate bordered width={300} space="$4">
+            <Dialog.Title>Merge Not Allowed</Dialog.Title>
+            <Dialog.Description>
+              This image is not yet analyzed. You cannot merge it.
+            </Dialog.Description>
+            <YStack alignItems="flex-end">
+              <Button
+                size="$2"
+                onPress={() => setShowWarning(false)}
+                backgroundColor="$primary"
+                color="$bg"
+                hoverStyle={{ backgroundColor: '$primary', color: '$bg' }}
+                pressStyle={{ backgroundColor: '$primary', color: '$bg', opacity: 1 }}
+              >
+                OK
+              </Button>
+            </YStack>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog>
     </>
   );
 };
