@@ -1,4 +1,4 @@
-import { Separator, XStack, YStack } from 'tamagui';
+import { Separator, XStack, YStack, ScrollView } from 'tamagui';
 import Scale from '../../components/common/Scale';
 import Edit from '../../components/common/Edit';
 import Logic from '../../components/common/Logic';
@@ -17,29 +17,37 @@ const SideToolbar = ({ onSwitchSidebar }) => {
       width={85}
       backgroundColor="$bg"
       padding={20}
-      justifyContent="space-between"
       alignItems="center"
+      justifyContent="space-between"
     >
-      <YStack gap={10}>
-        <Scale />
-        <Logic />
-        <Edit />
-        <Color />
-        <CustomPopover
-          trigger={<SidebarButton icon={DataIcon} label="Data" />}
-          content={
-            <>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{ width: '100%' }}
+        contentContainerStyle={{
+          alignItems: 'center',
+          width: '100%',
+        }}
+      >
+        <YStack gap={10} width="100%" alignItems="center">
+          <Scale />
+          <Logic />
+          <Edit />
+          <Color />
+          <CustomPopover
+            trigger={<SidebarButton icon={DataIcon} label="Data" />}
+            content={
               <XStack gap={16} padding={16}>
                 <SidebarButton icon={HeatMapIcon} label="HeatMap" />
                 <SidebarButton icon={MuckpileIcon} label="Muckpile" />
               </XStack>
-            </>
-          }
-        />
-        <Separator />
-        <SidebarButton icon={AutoDetect} label="Auto Detect" />
-      </YStack>
-      <YStack>
+            }
+          />
+          <Separator />
+          <SidebarButton icon={AutoDetect} label="Auto Detect" />
+        </YStack>
+      </ScrollView>
+
+      <YStack width="100%" alignItems="center" marginTop={16}>
         <SidebarButton
           icon={Graph}
           label="Graph"
