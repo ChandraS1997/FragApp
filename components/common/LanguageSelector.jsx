@@ -42,9 +42,9 @@ const LanguageSelector = () => {
   return (
     <Popover open={open} onOpenChange={setOpen} placement="bottom-end">
       <PopoverAnchor>
-        <XStack width={187} gap={1} alignItems="center" backgroundColor="$bg">
+        <XStack gap={1} alignItems="center" backgroundColor="$bg" flexGrow={1}>
           <Text
-            width={90}
+            // width={90}
             paddingVertical={8}
             paddingRight={4}
             paddingLeft={16}
@@ -57,19 +57,17 @@ const LanguageSelector = () => {
           </Text>
 
           <Button
-            // width={96}
-            // paddingVertical={8}
-            paddingRight={16}
             backgroundColor="$bg"
             onPress={() => setOpen(prev => !prev)}
             justifyContent="flex-start"
             borderWidth={0}
             borderRadius={0}
+            paddingRight={0}
             pressStyle={{ backgroundColor: '$bg' }}
             hoverStyle={{ backgroundColor: '$bg' }}
             focusStyle={{ backgroundColor: '$bg' }}
           >
-            <XStack width={120} paddingVertical={8} paddingRight={16} alignItems="center" gap={8}>
+            <XStack paddingVertical={8} paddingRight={16} alignItems="center" gap={8} flexGrow={1}>
               <FlagIcon countryCode={selected.countryCode} emoji={selected.emoji} />
               <Text
                 color="$textSecondary"
