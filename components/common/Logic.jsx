@@ -1,11 +1,13 @@
 import CustomPopover from './CustomPopover';
 import SidebarButton from './SideBarButton';
 import { Label, YStack } from 'tamagui';
-import { Slider } from 'react-native-elements';
+import SliderNative from '@react-native-community/slider';
 import SwitchWithLabel from './SwitchWithLabel';
 import CustomMenu from './CustomMenu';
 import LogicIcon from '../../assets/icons/logic.svg';
 import { useState } from 'react';
+import { Platform } from 'react-native';
+import { WebSlider } from './EditParameters';
 
 const Logic = () => {
   return (
@@ -35,19 +37,21 @@ const LogicContent = () => {
           <Label size={14} color="$textSecondary">
             Particle Size
           </Label>
-          <Slider
-            value={value}
-            onValueChange={setValue}
-            minimumValue={0}
-            maximumValue={100}
-            step={1}
-            style={{ height: 6 }}
-            minimumTrackTintColor="#267EF9"
-            maximumTrackTintColor="#F5F5F5"
-            thumbTintColor="#267EF9"
-            thumbStyle={{ height: 20, width: 20 }}
-            trackStyle={{ height: 6, borderRadius: 3 }}
-          />
+          {Platform.OS === 'web' ? (
+            <WebSlider value={value} onValueChange={setValue} />
+          ) : (
+            <SliderNative
+              value={value}
+              onValueChange={setValue}
+              minimumValue={0}
+              maximumValue={5}
+              step={0.1}
+              style={{ width: '100%', height: 24 }}
+              minimumTrackTintColor="#007bff"
+              maximumTrackTintColor="#E5E5E5"
+              thumbTintColor="#007bff"
+            />
+          )}
         </YStack>
       </YStack>
     </>
