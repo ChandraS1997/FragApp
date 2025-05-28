@@ -26,7 +26,7 @@ const ProjectView = () => {
 
   const [imageUri, setImageUri] = useState(null);
   const [mergeMode, setMergeMode] = useState(false);
-  const [showWarning, setShowWarning] = useState(false);
+  const [toastVisible, setToastVisible] = useState(false);
 
   const [images, setImages] = useState(
     new Array(12).fill(0).map((_, i) => ({
@@ -240,7 +240,8 @@ const ProjectView = () => {
                   <TouchableOpacity
                     onPress={() => {
                       if (!img.isAnalyzed) {
-                        setShowWarning(true); // Show dialog instead of alert
+                        setToastVisible(true);
+                        setTimeout(() => setToastVisible(false), 2000);
                       } else {
                         handleCheckboxToggle(img);
                       }
@@ -291,32 +292,38 @@ const ProjectView = () => {
           ))}
         </ScrollView>
       </YStack>
-
-      <Dialog open={showWarning} onOpenChange={setShowWarning}>
-        <Dialog.Portal>
-          <Dialog.Overlay />
-          <Dialog.Content elevate bordered width={300} space="$4">
-            <Dialog.Title>Merge Not Allowed</Dialog.Title>
-            <Dialog.Description>
-              This image is not yet analyzed. You cannot merge it.
-            </Dialog.Description>
-            <YStack alignItems="flex-end">
-              <Button
-                size="$2"
-                onPress={() => setShowWarning(false)}
-                backgroundColor="$primary"
-                color="$bg"
-                hoverStyle={{ backgroundColor: '$primary', color: '$bg' }}
-                pressStyle={{ backgroundColor: '$primary', color: '$bg', opacity: 1 }}
-              >
-                OK
-              </Button>
-            </YStack>
-          </Dialog.Content>
-        </Dialog.Portal>
-      </Dialog>
+      <ToastMessage
+        visible={toastVisible}
+        message="This image is not yet analyzed. You cannot merge it."
+      />
     </>
   );
 };
 
 export default ProjectView;
+
+const ToastMessage = ({ visible, message }) => {
+  if (!visible) return null;
+
+  return (
+    <YStack
+      position="absolute"
+      bottom={40}
+      alignSelf="center"
+      paddingHorizontal={16}
+      paddingVertical={10}
+      backgroundColor="$danger"
+      borderRadius={8}
+      borderWidth={1}
+      borderColor="$borderColor"
+      shadowColor="black"
+      shadowOpacity={0.1}
+      shadowRadius={6}
+      zIndex={999}
+    >
+      <Text color="$bg" fontSize={14}>
+        {message}
+      </Text>
+    </YStack>
+  );
+};
