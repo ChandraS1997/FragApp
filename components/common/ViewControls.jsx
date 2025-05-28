@@ -1,4 +1,6 @@
 import { XStack, TooltipGroup, Tooltip, Paragraph } from 'tamagui';
+import { Platform } from 'react-native';
+
 import SidebarButton from './SideBarButton';
 
 import ZoomOutIcon from '../../assets/icons/zoomOut.svg';
@@ -6,10 +8,36 @@ import ZoomInIcon from '../../assets/icons/zoomIn.svg';
 import ScanIcon from '../../assets/icons/scan.svg';
 import CameraIcon from '../../assets/icons/camera.svg';
 import LogicIcon from '../../assets/icons/logic.svg';
+
 import CustomPopover from './CustomPopover';
 import EditImage from './EditImage';
 
 const ViewControls = () => {
+  const isWeb = Platform.OS === 'web';
+
+  if (!isWeb) {
+    return (
+      <XStack gap={8} padding={8} background="transparent">
+        <XStack paddingRight={8} borderRightWidth={1} borderRightColor="$borderColor">
+          <CustomPopover
+            trigger={<SidebarButton icon={LogicIcon} defaultColor="$primary" />}
+            content={({ onClose }) => <EditImage onClose={onClose} />}
+          />
+        </XStack>
+
+        <XStack gap={8} paddingRight={8} borderRightWidth={1} borderRightColor="$borderColor">
+          <SidebarButton icon={ZoomOutIcon} defaultColor="$primary" />
+          <SidebarButton icon={ZoomInIcon} defaultColor="$primary" />
+          <SidebarButton icon={ScanIcon} defaultColor="$primary" />
+        </XStack>
+
+        <XStack gap={8}>
+          <SidebarButton icon={CameraIcon} defaultColor="$primary" />
+        </XStack>
+      </XStack>
+    );
+  }
+
   return (
     <TooltipGroup delay={0}>
       <XStack gap={8} padding={8} background="transparent">
