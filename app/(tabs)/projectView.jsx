@@ -106,7 +106,7 @@ const ProjectView = () => {
         title={
           <XStack alignItems="center" space="$2">
             <ArrowLeft size={20} color="$bg" onPress={handleBack} />
-            <Text>{name}</Text>
+            <Text color="$bg">{name}</Text>
           </XStack>
         }
       />

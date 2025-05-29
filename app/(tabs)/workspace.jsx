@@ -149,7 +149,7 @@ const WorkSpace = () => {
             <Text color="$bg" paddingLeft={10}>
               {id}
             </Text>
-            <Text>/{name}</Text>
+            <Text color="$bg">/{name}</Text>
           </XStack>
         }
       />
