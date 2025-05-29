@@ -305,6 +305,7 @@ const ProjectView = () => {
             bordered
             elevate
             width={394}
+            maxHeight="90vh"
             borderRadius={12}
             backgroundColor="white"
             padding={0}
@@ -359,8 +360,7 @@ const ProjectView = () => {
                   color="$bg"
                   icon={Plus}
                   theme="blue"
-                  flex={1}
-                  mr={8}
+                  // flex={1}
                   hoverStyle={{
                     backgroundColor: '$primary',
                     color: '$bg',
@@ -379,7 +379,7 @@ const ProjectView = () => {
                   variant="outlined"
                   theme="blue"
                   color="$textSecondary"
-                  flex={1}
+                  // flex={1}
                 >
                   Cancel
                 </Button>
