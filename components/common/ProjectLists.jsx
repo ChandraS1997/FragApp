@@ -43,7 +43,7 @@ export default function ProjectLists({ query }) {
           {/* Header */}
           <XStack
             padding="$3"
-            backgroundColor="$hoverBackground"
+            backgroundColor="$lightPrimary"
             borderBottomWidth={1}
             borderColor="$borderColor"
           >
@@ -52,7 +52,7 @@ export default function ProjectLists({ query }) {
               fontWeight="600"
               fontSize="$5"
               color="$darkPrimary"
-              backgroundColor="$hoverBackground"
+              backgroundColor="$lightPrimary"
             >
               No.
             </Text>
@@ -61,7 +61,7 @@ export default function ProjectLists({ query }) {
               fontWeight="600"
               fontSize="$5"
               color="$darkPrimary"
-              backgroundColor="$hoverBackground"
+              backgroundColor="$lightPrimary"
             >
               Name
             </Text>
@@ -70,7 +70,7 @@ export default function ProjectLists({ query }) {
               fontWeight="600"
               fontSize="$5"
               color="$darkPrimary"
-              backgroundColor="$hoverBackground"
+              backgroundColor="$lightPrimary"
             >
               Uploaded On
             </Text>
@@ -79,7 +79,7 @@ export default function ProjectLists({ query }) {
               fontWeight="600"
               fontSize="$5"
               color="$darkPrimary"
-              backgroundColor="$hoverBackground"
+              backgroundColor="$lightPrimary"
             >
               Description
             </Text>
@@ -88,7 +88,7 @@ export default function ProjectLists({ query }) {
               fontWeight="600"
               fontSize="$5"
               color="$darkPrimary"
-              backgroundColor="$hoverBackground"
+              backgroundColor="$lightPrimary"
               textAlign="center"
             >
               Actions

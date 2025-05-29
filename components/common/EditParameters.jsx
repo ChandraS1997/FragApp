@@ -84,7 +84,7 @@ const EditParameters = ({ onClose }) => {
           </YStack>
         </ScrollView>
 
-        <YStack padding={16}>
+        <YStack padding={16} backgroundColor="$lightPrimary">
           <DualButton onCancel={handleCancel} onApply={handleApply} />
         </YStack>
       </YStack>

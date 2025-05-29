@@ -36,6 +36,8 @@ const tokens = createTokens({
 
     //hover colors
     hoverLight: '#DEECFF',
+
+    lightPrimary: '#F3F9FF',
   },
 });
 
@@ -48,6 +50,7 @@ const themes = {
     borderColor: tokens.color.borderLight,
     primary: tokens.color.primary,
     darkPrimary: tokens.color.darkPrimary,
+    lightPrimary: tokens.color.lightPrimary,
     danger: tokens.color.danger,
     hoverBackground: tokens.color.hoverLight,
   },
@@ -59,7 +62,7 @@ const themes = {
     borderColor: tokens.color.borderDark,
     primary: tokens.color.primary,
     darkPrimary: tokens.color.darkPrimary,
-
+    lightPrimary: tokens.color.lightPrimary,
     danger: tokens.color.danger,
     hoverBackground: tokens.color.hoverLight,
   },

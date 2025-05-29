@@ -47,7 +47,7 @@ const EditImage = ({ onClose }) => {
         <LabeledSlider label="Brightness" defaultValue={2.3} />
         <LabeledSlider label="Contrast" defaultValue={2.3} />
       </YStack>
-      <YStack padding={16}>
+      <YStack padding={16} backgroundColor="$lightPrimary">
         <DualButton onCancel={handleCancel} onApply={handleApply} />
       </YStack>
     </YStack>

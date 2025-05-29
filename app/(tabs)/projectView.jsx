@@ -27,6 +27,8 @@ const ProjectView = () => {
   const [imageUri, setImageUri] = useState(null);
   const [mergeMode, setMergeMode] = useState(false);
   const [toastVisible, setToastVisible] = useState(false);
+  const [showCaptureDialog, setShowCaptureDialog] = useState(false);
+  const [showUploadDialog, setShowUploadDialog] = useState(false);
 
   const [images, setImages] = useState(
     new Array(12).fill(0).map((_, i) => ({
@@ -178,7 +180,6 @@ const ProjectView = () => {
 
             <Button
               theme="blue"
-              // variant="outlined"
               icon={Plus}
               size="$3"
               height={40}
@@ -189,7 +190,7 @@ const ProjectView = () => {
               backgroundColor="$bg"
               hoverStyle={{ backgroundColor: '$hoverBackground' }}
               pressStyle={{ backgroundColor: '$hoverBackground' }}
-              onPress={handleCapture}
+              onPress={() => setShowCaptureDialog(true)}
             >
               Add Image
             </Button>
@@ -207,7 +208,7 @@ const ProjectView = () => {
               backgroundColor="$bg"
               hoverStyle={{ backgroundColor: '$hoverBackground' }}
               pressStyle={{ backgroundColor: '$hoverBackground' }}
-              onPress={pickImage}
+              onPress={() => setShowUploadDialog(true)}
             >
               Upload Image
             </Button>
@@ -296,6 +297,211 @@ const ProjectView = () => {
         visible={toastVisible}
         message="This image is not yet analyzed. You cannot merge it."
       />
+      <Dialog open={showCaptureDialog} onOpenChange={setShowCaptureDialog}>
+        <Dialog.Portal>
+          <Dialog.Overlay />
+
+          <Dialog.Content
+            bordered
+            elevate
+            width={394}
+            borderRadius={12}
+            backgroundColor="white"
+            padding={0}
+          >
+            <YStack space="$3">
+              {/* Title */}
+              <YStack
+                backgroundColor="$darkPrimary"
+                borderTopLeftRadius={12}
+                borderTopRightRadius={12}
+                padding={16}
+              >
+                <Text color="white" fontSize={16} fontWeight="700">
+                  Important
+                </Text>
+              </YStack>
+
+              {/* Content */}
+              <YStack paddingHorizontal={16} paddingTop={8} gap={10}>
+                <Text fontWeight="700" fontSize={15}>
+                  Image Check Criteria
+                </Text>
+                <Text fontSize={14}>Before analysis, each image must meet these standards:</Text>
+                <YStack gap={10} paddingLeft={16}>
+                  <Text fontSize={14} color="$textSecondary">
+                    • <Text fontWeight="400">Angle</Text> – Camera should be perpendicular to the
+                    surface (±10° tolerance).
+                  </Text>
+                  <Text fontSize={14} color="$textSecondary">
+                    • <Text fontWeight="400">Brightness</Text> – Avoid overexposure; histogram
+                    should not be clipped at either end.
+                  </Text>
+                  <Text fontSize={14} color="$textSecondary">
+                    • <Text fontWeight="400">Quality</Text> – No visible blur; motion blur &lt; 1
+                    pixel.
+                  </Text>
+                  <Text fontSize={14} color="$textSecondary">
+                    • <Text fontWeight="400">Resolution</Text> – Minimum 1920×1080 px (2MP);
+                    recommended 12MP+ for detailed analysis.
+                  </Text>
+                </YStack>
+              </YStack>
+
+              {/* Buttons */}
+              <YStack gap={6} padding={16} borderTopWidth={1} borderColor="$borderColor">
+                <Button
+                  onPress={() => {
+                    setShowCaptureDialog(false);
+                    handleCapture(); // Call camera function
+                  }}
+                  backgroundColor="$primary"
+                  color="$bg"
+                  icon={Plus}
+                  theme="blue"
+                  flex={1}
+                  mr={8}
+                  hoverStyle={{
+                    backgroundColor: '$primary',
+                    color: '$bg',
+                  }}
+                  pressStyle={{
+                    backgroundColor: '$primary',
+                    color: '$bg',
+                    opacity: 1,
+                  }}
+                >
+                  Capture Images
+                </Button>
+
+                <Button
+                  onPress={() => setShowCaptureDialog(false)}
+                  variant="outlined"
+                  theme="blue"
+                  color="$textSecondary"
+                  flex={1}
+                >
+                  Cancel
+                </Button>
+              </YStack>
+            </YStack>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog>
+
+      <Dialog open={showUploadDialog} onOpenChange={setShowUploadDialog}>
+        <Dialog.Portal>
+          <Dialog.Overlay />
+
+          <Dialog.Content
+            bordered
+            elevate
+            width={418}
+            borderRadius={12}
+            backgroundColor="white"
+            padding={0}
+          >
+            <YStack gap="$3">
+              {/* Header */}
+              <XStack
+                backgroundColor="#1B4DB1"
+                borderTopLeftRadius={12}
+                borderTopRightRadius={12}
+                padding={16}
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <Text color="white" fontSize={16} fontWeight="700">
+                  Upload Images
+                </Text>
+                <TouchableOpacity onPress={() => setShowUploadDialog(false)}>
+                  <X size={18} color="white" />
+                </TouchableOpacity>
+              </XStack>
+
+              {/* Upload Box */}
+              <YStack padding={16} gap={8}>
+                <YStack>
+                  <Text color="$textSecondary">Upload</Text>
+                </YStack>
+
+                <YStack
+                  borderStyle="dashed"
+                  borderWidth={1}
+                  borderColor="$borderColor"
+                  borderRadius={8}
+                  padding={16}
+                  alignItems="center"
+                  justifyContent="center"
+                  onClick={() => pickImage()}
+                  onDragOver={e => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }}
+                  onDrop={e => {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    const files = e.dataTransfer.files;
+                    if (files && files.length > 0) {
+                      // Send dropped file to your handler
+                      pickImage(files[0]); // Pass file manually if pickImage supports it
+                    }
+                  }}
+                  cursor="pointer"
+                >
+                  <Upload size={40} color="#9E9E9E" />
+                  <Text fontSize={13} color="#666" mt={8}>
+                    Browse image or drag & drop to upload
+                  </Text>
+                </YStack>
+              </YStack>
+
+              {/* Action Buttons */}
+              <XStack
+                justifyContent="flex-end"
+                gap="$2"
+                borderBottomLeftRadius={12}
+                borderBottomRightRadius={12}
+                padding={16}
+                backgroundColor="$lightPrimary"
+                borderTopWidth={1}
+                borderColor="$borderColor"
+              >
+                <Button
+                  variant="outlined"
+                  theme="blue"
+                  color="$textSecondary"
+                  onPress={() => setShowUploadDialog(false)}
+                >
+                  Cancel
+                </Button>
+
+                <Button
+                  theme="blue"
+                  backgroundColor="$primary"
+                  color="$bg"
+                  hoverStyle={{
+                    backgroundColor: '$primary',
+                    color: '$bg',
+                  }}
+                  pressStyle={{
+                    backgroundColor: '$primary',
+                    color: '$bg',
+                    opacity: 1,
+                  }}
+                  onPress={() => {
+                    // pickImage();
+                    setShowUploadDialog(false);
+                  }}
+                >
+                  Upload
+                </Button>
+              </XStack>
+            </YStack>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog>
     </>
   );
 };

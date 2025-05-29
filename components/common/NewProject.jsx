@@ -51,6 +51,8 @@ export default function CreateProjectModal({ open, onOpenChange }) {
                 circular
                 size="$2"
                 backgroundColor="transparent"
+                hoverStyle={{ backgroundColor: '$darkPrimary', color: '$bg' }}
+                pressStyle={{ backgroundColor: '$darkPrimary', color: '$bg', opacity: 1 }}
                 color="$bg"
                 icon={() => <>✕</>}
               />
@@ -84,7 +86,13 @@ export default function CreateProjectModal({ open, onOpenChange }) {
             </YStack>
           </YStack>
 
-          <XStack justifyContent="flex-end" marginTop="$4" gap="$2" padding={16}>
+          <XStack
+            justifyContent="flex-end"
+            marginTop="$4"
+            gap="$2"
+            padding={16}
+            backgroundColor="$lightPrimary"
+          >
             <Dialog.Close asChild>
               <Button theme="gray">Cancel</Button>
             </Dialog.Close>
