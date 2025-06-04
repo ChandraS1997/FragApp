@@ -1,4 +1,4 @@
-import { Dialog, Button, Input, Label, TextArea, YStack, XStack, Paragraph } from 'tamagui';
+import { Dialog, Button, Input, Label, TextArea, YStack, XStack, Paragraph,Text } from 'tamagui';
 import { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 
@@ -54,7 +54,7 @@ export default function CreateProjectModal({ open, onOpenChange }) {
                 hoverStyle={{ backgroundColor: '$darkPrimary', color: '$bg' }}
                 pressStyle={{ backgroundColor: '$darkPrimary', color: '$bg', opacity: 1 }}
                 color="$bg"
-                icon={() => <>✕</>}
+                icon={() => <Text>✕</Text>}
               />
             </Dialog.Close>
           </XStack>
