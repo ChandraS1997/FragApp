@@ -1,6 +1,6 @@
-import { Dialog, Button, Input, Label, TextArea, YStack, XStack, Paragraph,Text } from 'tamagui';
-import { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
+import { useState } from 'react';
+import { Button, Dialog, Input, Label, Paragraph, Text, TextArea, XStack, YStack } from 'tamagui';
 
 export default function CreateProjectModal({ open, onOpenChange }) {
   const [name, setName] = useState('');
@@ -24,9 +24,10 @@ export default function CreateProjectModal({ open, onOpenChange }) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange} modal padding={0}>
       <Dialog.Portal>
-        <Dialog.Overlay />
+        <Dialog.Overlay key="overlay" />
 
         <Dialog.Content
+          key="content"
           bordered
           elevate
           width={400}

@@ -8,8 +8,10 @@
     "scheme": "fragapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "jsEngine": "jsc",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anonymous.fragapp"
     },
     "android": {
       "adaptiveIcon": {

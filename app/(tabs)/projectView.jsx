@@ -298,9 +298,10 @@ const ProjectView = () => {
       />
       <Dialog open={showCaptureDialog} onOpenChange={setShowCaptureDialog}>
         <Dialog.Portal>
-          <Dialog.Overlay />
+          <Dialog.Overlay key="overlay" />
 
           <Dialog.Content
+            key="content"
             bordered
             elevate
             width={394}
@@ -390,9 +391,10 @@ const ProjectView = () => {
 
       <Dialog open={showUploadDialog} onOpenChange={setShowUploadDialog}>
         <Dialog.Portal>
-          <Dialog.Overlay />
+          <Dialog.Overlay key="overlay" />
 
           <Dialog.Content
+            key="content"
             bordered
             elevate
             width={418}
