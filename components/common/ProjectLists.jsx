@@ -1,10 +1,9 @@
-import { View, Text, XStack, YStack, useWindowDimensions, Card } from "tamagui";
-import { ScrollView } from "react-native";
 import { Button } from "@tamagui/button";
 import { Pencil, Trash2 } from "@tamagui/lucide-icons";
-import { useState } from "react";
 import { useRouter } from "expo-router";
-import { Alert } from "react-native";
+import { useState } from "react";
+import { Alert, ScrollView } from "react-native";
+import { Card, Text, XStack, YStack, useWindowDimensions } from "tamagui";
 import { deleteProject } from "../../backend/functions/ProjectsFunction"; // adjust path if needed
 
 const ITEMS_PER_PAGE = 15;
@@ -22,6 +21,7 @@ export default function ProjectLists({ query, projects = [], setProjects }) {
     updated: new Date(project.updated_at).toLocaleString(), // Format if needed
     desc: project.desc,
     id: project.id,
+    img_url: project.img_url,
   }));
 
   const filteredData = data.filter((item) =>
@@ -38,6 +38,8 @@ export default function ProjectLists({ query, projects = [], setProjects }) {
 
   const handlePrev = () => setPage((p) => Math.max(1, p - 1));
   const handleNext = () => setPage((p) => Math.min(totalPages, p + 1));
+
+  console.log(paginatedData);
 
   const handleDelete = async (projectId) => {
     Alert.alert(
@@ -197,6 +199,7 @@ export default function ProjectLists({ query, projects = [], setProjects }) {
                           name: item.name,
                           desc: item.desc,
                           updated: item.updated,
+                          img_url: item.img_url,
                         },
                       });
                     }}

@@ -1,7 +1,6 @@
 import Realm from 'realm';
+import { ImageSchema, ProjectSchema } from '../models/Project';
 import { TaskSchema } from '../models/Task';
-import { ProjectSchema } from '../models/Project';
-import { ImageSchema } from '../models/Project';
 
 const getRealmInstance = async () => {
     const realm = await Realm.open({

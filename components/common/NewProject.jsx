@@ -2,7 +2,9 @@ import * as FileSystem from "expo-file-system";
 import * as ImagePicker from "expo-image-picker";
 import * as MediaLibrary from "expo-media-library";
 import { useState } from "react";
+import mime from 'react-native-mime-types';
 import uuid from "react-native-uuid";
+
 import {
   Button,
   Dialog,
@@ -26,18 +28,37 @@ export default function CreateProjectModal({
 }) {
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
-  const [image, setImage] = useState(null);
+  const [images, setImages] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
 
   const copyImageToStorage = async (uri) => {
     const customDir = `${FileSystem.documentDirectory}project_images/`;
     await FileSystem.makeDirectoryAsync(customDir, { intermediates: true });
-    const fileName = uri.split("/").pop();
+
+    let extension = uri.split(".").pop();
+
+    if (!extension || uri.startsWith("ph://")) {
+      // Save to MediaLibrary and get real URI
+      const asset = await MediaLibrary.createAssetAsync(uri);
+      const assetInfo = await MediaLibrary.getAssetInfoAsync(asset);
+      const realUri = assetInfo.localUri;
+
+      const mimeType = mime.lookup(realUri || uri);
+      extension = mime.extension(mimeType) || "jpg";
+
+      const fileName = `img_${Date.now()}.${extension}`;
+      const dest = `${customDir}${fileName}`;
+      await FileSystem.copyAsync({ from: realUri, to: dest });
+      return dest;
+    }
+
+    // If URI has extension already (Android usually)
+    const fileName = `img_${Date.now()}.${extension}`;
     const dest = `${customDir}${fileName}`;
     await FileSystem.copyAsync({ from: uri, to: dest });
     return dest;
   };
-
   const saveToGallery = async (uri) => {
     const hasPermission = await requestMediaLibraryPermission(); //REquest permission
     if (!hasPermission) return null;
@@ -46,16 +67,45 @@ export default function CreateProjectModal({
   };
 
   const pickImage = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-    });
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsMultipleSelection: true,
+      });
 
-    if (!result.canceled) {
-      const localCopy = await copyImageToStorage(result.assets[0].uri); //copy image
-      const galleryUri = await saveToGallery(localCopy); // save image to local device
-      setImage(galleryUri || localCopy);
+      if (!result.canceled) {
+        const selected = await Promise.all(
+          result.assets.map(async (asset) => {
+            const originalUri = asset.uri;
+
+            // Create asset to resolve 'ph://' URI
+            const createdAsset = await MediaLibrary.createAssetAsync(originalUri);
+            const assetInfo = await MediaLibrary.getAssetInfoAsync(createdAsset);
+            const realUri = assetInfo.localUri;
+
+            // Get MIME type and extension
+            const mimeType = mime.lookup(realUri || originalUri);
+            const ext = mime.extension(mimeType) || 'jpg';
+
+            const fileName = `img_${Date.now()}.${ext}`;
+            const dest = `${FileSystem.documentDirectory}project_images/${fileName}`;
+
+            await FileSystem.copyAsync({ from: realUri, to: dest });
+
+            return dest;
+          })
+        );
+
+        setImages((prev) => {
+          const newSet = new Set([...prev, ...selected]);
+          return Array.from(newSet);
+        });
+      }
+    } catch (err) {
+      console.error('Image picking failed:', err);
     }
   };
+
 
   const handleSubmit = async () => {
     if (isSubmitting) return;
@@ -64,7 +114,7 @@ export default function CreateProjectModal({
       Toast.show("Project name is required", { type: "error" });
       return;
     }
-    if (!image) {
+    if (!images) {
       alert("Please upload an image");
       Toast.show("Please upload an image", { type: "error" });
       return;
@@ -73,16 +123,21 @@ export default function CreateProjectModal({
     // console.log(image.split("/").pop().split(".").pop()?.toLowerCase());
     const allowedExtensions = ["jpg", "jpeg", "png", "tiff"];
 
-    // Try to get extension from file name if available, fallback to uri
-    const getImageExtension = () => {
-      const fileName = image.split("/").pop().split(".").pop()?.toLowerCase(); // fallback to last part of URI
-      return fileName;
+    const validateImages = () => {
+      for (const img of images) {
+        const ext = img.split(".").pop()?.toLowerCase();
+        console.log("Image extension:", ext);
+        if (!ext || !allowedExtensions.includes(ext)) return false;
+      }
+      return true;
     };
 
-    const imageExtension = getImageExtension();
-    console.log("Extension:", imageExtension);
-
-    if (!allowedExtensions.includes(imageExtension)) {
+    if (!images.length) {
+      alert("Please upload at least one image");
+      Toast.show("Please upload at least one image", { type: "error" });
+      return;
+    }
+    if (!validateImages()) {
       alert("Only JPG, JPEG, PNG, and TIFF images are allowed");
       Toast.show("Only JPG, JPEG, PNG, and TIFF images are allowed", {
         type: "error",
@@ -95,7 +150,7 @@ export default function CreateProjectModal({
       id: uuid.v4(),
       name,
       desc,
-      img_url: image,
+      img_url: JSON.stringify(images),
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
       created_by: "admin",
@@ -107,7 +162,7 @@ export default function CreateProjectModal({
       setProjects((prev) => [newProject, ...prev]);
       setName("");
       setDesc("");
-      setImage(null);
+      setImages([]);
       onOpenChange(false);
     } catch (err) {
       console.error("❌ Failed to add project:", err);
@@ -118,8 +173,9 @@ export default function CreateProjectModal({
   return (
     <Dialog open={open} onOpenChange={onOpenChange} modal padding={0}>
       <Dialog.Portal>
-        <Dialog.Overlay />
+        <Dialog.Overlay key="overlay" />
         <Dialog.Content
+          key="content"
           bordered
           elevate
           width={400}
@@ -185,9 +241,9 @@ export default function CreateProjectModal({
                 onPress={pickImage}
               >
                 <Paragraph>
-                  {image
-                    ? "Image Selected ✓"
-                    : "Browse image or drag & drop to upload"}
+                  {images.length > 0
+                    ? `${images.length} image(s) selected ✓`
+                    : "Browse images or drag & drop to upload"}
                 </Paragraph>
               </Button>
             </YStack>

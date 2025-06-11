@@ -26,11 +26,12 @@ import {
 import { v4 as uuidv4 } from "uuid";
 import Header from "../../components/common/Header";
 // getRealmInstance is imported here but not directly used in pickImage, as addImages handles it
+import getRealmInstance from "../../backend/database/realm";
 import { addImages } from "../../backend/functions/ImageFunction";
 
 const ProjectView = () => {
   const router = useRouter();
-  const { name, id } = useLocalSearchParams(); //required
+  const { id, name, desc, updated, updated_by, created_by, created_at, img_url } = useLocalSearchParams(); //required
 
   const [imageUri, setImageUri] = useState([]);
   const [mergeMode, setMergeMode] = useState(false);
@@ -46,12 +47,39 @@ const ProjectView = () => {
     requestPermissions();
   }, []);
 
-  const loadImages = () => {
-    const savedImages = realm.objects("Image").map((image) => ({
-      id: image.id,
-      uri: image.uri,
-    }));
-    setImages(savedImages);
+  useEffect(() => {
+  if (img_url) {
+    try {
+      const parsed = JSON.parse(img_url); // Parse stringified array
+      if (Array.isArray(parsed)) {
+        const formatted = parsed.map((uri, index) => ({
+          id: `static-${index}`,
+          uri,
+          created_at: new Date(),
+          name: uri.split('/').pop(),
+        }));
+        setImages((prev) => [...formatted, ...prev]);
+      }
+    } catch (err) {
+      console.error("Failed to parse img_url from route params:", err);
+    }
+  }
+}, [img_url]);
+
+  const loadImages = async () => {
+    const realm = await getRealmInstance();
+  const projectImages = realm
+    .objects("Images")
+    .filtered("project_id == $0", id);
+  const parsingData  = JSON.parse(projectImages);
+  const formatted = parsingData.map((img) => ({
+    id: img.id,
+    uri: img.img_url,
+    created_at: img.created_at,
+  }));
+
+  setImages(formatted);
+  console.log("Loaded Images are:- " + formatted);
   };
 
   const requestPermissions = async () => {
@@ -363,6 +391,8 @@ const ProjectView = () => {
                 <Image
                   source={{ uri: img.uri }}
                   style={{ width: "100%", height: 100, borderRadius: 8 }}
+                  onError={(e) => console.warn('Image failed to load:', e.nativeEvent.error)}
+                  resizeMode="cover"
                 />
                 <SizableText size="$2" fontWeight="700" paddingLeft="$2">
                   {img.name}
