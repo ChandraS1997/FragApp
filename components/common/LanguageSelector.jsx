@@ -55,15 +55,7 @@ const LanguageSelector = () => {
           >
             Language
           </Text>
-          {/* <Button
-            size="$2"
-            onPress={() => {
-              router.push({
-                pathname: '/taskview',
-
-              });
-            }}
-          /> */}
+          
           <Button
             backgroundColor="$darkPrimary"
             onPress={() => setOpen(prev => !prev)}

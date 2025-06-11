@@ -1,38 +1,79 @@
-import { View, Text, XStack, YStack, useWindowDimensions, Card } from 'tamagui';
-import { ScrollView } from 'react-native';
-import { Button } from '@tamagui/button';
-import { Pencil, Trash2 } from '@tamagui/lucide-icons';
-import { useState } from 'react';
-import { useRouter } from 'expo-router';
-
-const data = Array.from({ length: 50 }).map((_, i) => ({
-  no: `${String(i + 1).padStart(2, '0')}`,
-  name: i % 2 === 0 ? 'Omid Mine Site 1' : 'Omid Mine Site 2',
-  updated: i % 2 === 0 ? 'Updated 16 hrs ago' : 'Updated 2 days ago',
-  desc: i === 0 ? 'This is the image of adcd blast' : 'This is the image of Omid blast',
-}));
+import { View, Text, XStack, YStack, useWindowDimensions, Card } from "tamagui";
+import { ScrollView } from "react-native";
+import { Button } from "@tamagui/button";
+import { Pencil, Trash2 } from "@tamagui/lucide-icons";
+import { useState } from "react";
+import { useRouter } from "expo-router";
+import { Alert } from "react-native";
+import { deleteProject } from "../../backend/functions/ProjectsFunction"; // adjust path if needed
 
 const ITEMS_PER_PAGE = 15;
 
-export default function ProjectLists({ query }) {
+export default function ProjectLists({ query, projects = [], setProjects }) {
   const { height } = useWindowDimensions();
   const scrollMaxHeight = height * 0.6; // Adjusted to 45% of screen height for better responsiveness
   const [page, setPage] = useState(1);
   const router = useRouter();
+  // console.log(projects)
 
-  const filteredData = data.filter(item => item.name.toLowerCase().includes(query.toLowerCase()));
+  const data = projects.map((project, index) => ({
+    no: `${String(index + 1).padStart(2, "0")}`,
+    name: project.name,
+    updated: new Date(project.updated_at).toLocaleString(), // Format if needed
+    desc: project.desc,
+    id: project.id,
+  }));
+
+  const filteredData = data.filter((item) =>
+    item.name.toLowerCase().includes(query.toLowerCase())
+  );
 
   const totalItems = filteredData.length;
   const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
 
-  const paginatedData = filteredData.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
+  const paginatedData = filteredData.slice(
+    (page - 1) * ITEMS_PER_PAGE,
+    page * ITEMS_PER_PAGE
+  );
 
-  const handlePrev = () => setPage(p => Math.max(1, p - 1));
-  const handleNext = () => setPage(p => Math.min(totalPages, p + 1));
+  const handlePrev = () => setPage((p) => Math.max(1, p - 1));
+  const handleNext = () => setPage((p) => Math.min(totalPages, p + 1));
+
+  const handleDelete = async (projectId) => {
+    Alert.alert(
+      "Confirm Delete",
+      "Are you sure you want to delete this project?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Delete",
+          style: "destructive",
+          onPress: async () => {
+            try {
+              await deleteProject(projectId);
+              setProjects((prev) => prev.filter((p) => p.id !== projectId));
+            } catch (err) {
+              console.error("Failed to delete project:", err);
+              alert("Failed to delete project.");
+            }
+          },
+        },
+      ],
+      { cancelable: true }
+    );
+  };
 
   return (
     <YStack flex={1} backgroundColor="$gray2" padding="$4">
-      <Card borderRadius="$6" backgroundColor="white" elevation="$4" padding="$4">
+      <Card
+        borderRadius="$6"
+        backgroundColor="white"
+        elevation="$4"
+        padding="$4"
+      >
         <XStack
           borderRadius="$4"
           overflow="hidden"
@@ -106,7 +147,12 @@ export default function ProjectLists({ query }) {
                 borderColor="$borderColor"
                 backgroundColor="white"
               >
-                <Text flex={1} fontSize="$4" color="$textSecondary" backgroundColor="$bg">
+                <Text
+                  flex={1}
+                  fontSize="$4"
+                  color="$textSecondary"
+                  backgroundColor="$bg"
+                >
                   {item.no}
                 </Text>
                 <Text
@@ -118,21 +164,36 @@ export default function ProjectLists({ query }) {
                 >
                   {item.name}
                 </Text>
-                <Text flex={3} fontSize="$4" color="$textSecondary" backgroundColor="$bg">
+                <Text
+                  flex={3}
+                  fontSize="$4"
+                  color="$textSecondary"
+                  backgroundColor="$bg"
+                >
                   {item.updated}
                 </Text>
-                <Text flex={4} fontSize="$4" color="$textSecondary" backgroundColor="$bg">
+                <Text
+                  flex={4}
+                  fontSize="$4"
+                  color="$textSecondary"
+                  backgroundColor="$bg"
+                >
                   {item.desc}
                 </Text>
-                <XStack flex={2} gap="$2" justifyContent="center" paddingRight="$2">
+                <XStack
+                  flex={2}
+                  gap="$2"
+                  justifyContent="center"
+                  paddingRight="$2"
+                >
                   <Button
                     icon={Pencil}
                     size="$2"
                     onPress={() => {
                       router.push({
-                        pathname: '/projectView',
+                        pathname: "/projectView",
                         params: {
-                          id: item.no, // or a unique ID
+                          id: item.id, // or a unique ID
                           name: item.name,
                           desc: item.desc,
                           updated: item.updated,
@@ -140,7 +201,12 @@ export default function ProjectLists({ query }) {
                       });
                     }}
                   />
-                  <Button icon={Trash2} size="$2" theme="red" />
+                  <Button
+                    icon={Trash2}
+                    size="$2"
+                    theme="red"
+                    onPress={() => handleDelete(item.id)}
+                  />
                 </XStack>
               </XStack>
             ))}
@@ -157,13 +223,29 @@ export default function ProjectLists({ query }) {
               Items per page {ITEMS_PER_PAGE}
             </Text>
             <Text color="$textSecondary" fontSize="$4">
-              {`${Math.min((page - 1) * ITEMS_PER_PAGE + 1, totalItems)} - ${Math.min(page * ITEMS_PER_PAGE, totalItems)} of ${totalItems} Items`}
+              {`${Math.min(
+                (page - 1) * ITEMS_PER_PAGE + 1,
+                totalItems
+              )} - ${Math.min(
+                page * ITEMS_PER_PAGE,
+                totalItems
+              )} of ${totalItems} Items`}
             </Text>
             <XStack alignItems="center" gap="$2">
-              <Button size="$2" variant="outlined" onPress={() => setPage(1)} disabled={page === 1}>
+              <Button
+                size="$2"
+                variant="outlined"
+                onPress={() => setPage(1)}
+                disabled={page === 1}
+              >
                 <Text>≪</Text>
               </Button>
-              <Button size="$2" variant="outlined" onPress={handlePrev} disabled={page === 1}>
+              <Button
+                size="$2"
+                variant="outlined"
+                onPress={handlePrev}
+                disabled={page === 1}
+              >
                 <Text>‹</Text>
               </Button>
               <Button size="$2" variant="active">

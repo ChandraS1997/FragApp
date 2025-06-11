@@ -1,8 +1,16 @@
-import { ArrowLeft, Check as CheckIcon, Plus, Trash, Upload } from '@tamagui/lucide-icons';
-import * as ImagePicker from 'expo-image-picker';
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useState } from 'react';
-import { Alert, ScrollView, TouchableOpacity } from 'react-native';
+import {
+  ArrowLeft,
+  Check as CheckIcon,
+  Plus,
+  Trash,
+  Upload,
+  X,
+} from "@tamagui/lucide-icons";
+import * as ImagePicker from "expo-image-picker";
+import * as MediaLibrary from "expo-media-library"; // Added MediaLibrary import
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { useEffect, useState } from "react";
+import { Alert, ScrollView, TouchableOpacity } from "react-native";
 import {
   Button,
   Card,
@@ -14,89 +22,146 @@ import {
   Text,
   XStack,
   YStack,
-} from 'tamagui';
-import Header from '../../components/common/Header';
-//import { launchCamera } from 'react-native-image-picker';
-import { X } from '@tamagui/lucide-icons';
+} from "tamagui";
+import { v4 as uuidv4 } from "uuid";
+import Header from "../../components/common/Header";
+// getRealmInstance is imported here but not directly used in pickImage, as addImages handles it
+import { addImages } from "../../backend/functions/ImageFunction";
 
 const ProjectView = () => {
   const router = useRouter();
-  const { name } = useLocalSearchParams();
+  const { name, id } = useLocalSearchParams(); //required
 
-  const [imageUri, setImageUri] = useState(null);
+  const [imageUri, setImageUri] = useState([]);
   const [mergeMode, setMergeMode] = useState(false);
   const [toastVisible, setToastVisible] = useState(false);
   const [showCaptureDialog, setShowCaptureDialog] = useState(false);
   const [showUploadDialog, setShowUploadDialog] = useState(false);
+  const [images, setImages] = useState([]); // image array
 
-  const [images, setImages] = useState(
-    new Array(12).fill(0).map((_, i) => ({
-      id: i,
-      name: `Image_${i + 1}.png`,
-      timestamp: 'Uploaded 17 hrs ago',
-      uri: 'https://via.placeholder.com/150',
-      isAnalyzed: i % 2 === 0,
-      isSelected: false,
-    }))
-  );
+  const handleBack = () => router.push("/");
 
-  const handleBack = () => router.push('/');
+  useEffect(() => {
+    loadImages();
+    requestPermissions();
+  }, []);
+
+  const loadImages = () => {
+    const savedImages = realm.objects("Image").map((image) => ({
+      id: image.id,
+      uri: image.uri,
+    }));
+    setImages(savedImages);
+  };
+
+  const requestPermissions = async () => {
+    // Request Camera and Media Library permissions
+    await ImagePicker.requestCameraPermissionsAsync();
+    await MediaLibrary.requestPermissionsAsync();
+  };
+
+  const currentProjectId = id; // Project ID from route params
+  const currentUserName = name; // User name from route params, or replace with actual user ID
+
+  console.log(
+    "currentUserName : " + currentUserName,
+    " / ",
+    "currentProjectId : " + id
+  ); //Project Name
 
   const pickImage = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
+    // No need to call getRealmInstance here; addImages will handle it.
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsMultipleSelection: true,
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      quality: 1,
     });
+
     if (!result.canceled) {
-      setImageUri(result.assets[0].uri);
+      const selectedImages = result.assets.map((asset) => ({
+        id: uuidv4(),
+        img_url: asset.uri, // Use uri as img_url
+        project_id: currentProjectId, // Link to the current project
+        created_at: new Date(),
+        updated_at: new Date(),
+        created_by: currentUserName,
+        updated_by: currentUserName,
+      }));
+
+      console.log("Attempting to add images to Realm...");
+      try {
+        await addImages(selectedImages); // Call the function to save images to Realm
+        console.log("Images added successfully to Realm.");
+        setImages((prev) => [...prev, ...selectedImages]); // Update local state
+        // Log the newly added images, as 'images' state might not reflect immediately
+        console.log("Newly added images:", selectedImages);
+      } catch (err) {
+        console.error("❌ Failed to add images:", err);
+        // You might want to show a user-friendly error message here
+      }
     }
   };
 
-  const handleCapture = () => {
-    launchCamera(
-      {
-        mediaType: 'photo',
-        cameraType: 'back',
-        saveToPhotos: true,
-      },
-      response => {
-        if (response.didCancel) return;
-        const uri = response.assets?.[0]?.uri;
-        if (uri) setImageUri(uri);
+  const handleCapture = async () => {
+    let result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      quality: 1,
+      saveToPhotos: true, // Save captured photo to device's camera roll
+    });
+    if (!result.canceled) {
+      const newImage = {
+        id: uuidv4(),
+        img_url: result.assets[0].uri, // Use uri as img_url for captured image
+        project_id: currentProjectId, // Link to the current project
+        created_at: new Date(),
+        updated_at: new Date(),
+        created_by: currentUserName,
+        updated_by: currentUserName,
+      };
+
+      // Add the single captured image to Realm
+      try {
+        await addImages([newImage]); // addImages expects an array
+        console.log("Captured image saved to Realm successfully!");
+        setImages((prev) => [...prev, newImage]); // Update local state
+      } catch (err) {
+        console.error("❌ Failed to add captured image:", err);
       }
-    );
+    }
   };
 
   const toggleMergeMode = () => {
     if (mergeMode) {
-      const anySelected = images.some(img => img.isSelected);
+      const anySelected = images.some((img) => img.isSelected);
       if (anySelected) {
         router.push({
-          pathname: '/workspace',
-          params: {
-            id: name,
-            name: 'Merged',
-            mode: 'graph',
-          },
+          pathname: "/workspace",
+          params: { id: name, name: "Merged", mode: "graph" },
         });
         return;
       }
     }
-
     setMergeMode(!mergeMode);
     if (!mergeMode) {
-      setImages(prev => prev.map(img => ({ ...img, isSelected: false })));
+      setImages((prev) => prev.map((img) => ({ ...img, isSelected: false })));
     }
   };
 
-  const handleCheckboxToggle = img => {
+  const handleCheckboxToggle = (img) => {
     if (!img.isAnalyzed) {
-      Alert.alert('Warning', 'This image is yet to be analyzed.');
+      Alert.alert("Warning", "This image is yet to be analyzed.");
       return;
     }
-
-    setImages(prev =>
-      prev.map(item => (item.id === img.id ? { ...item, isSelected: !item.isSelected } : item))
+    setImages((prev) =>
+      prev.map((item) =>
+        item.id === img.id ? { ...item, isSelected: !item.isSelected } : item
+      )
     );
+  };
+
+  const deleteImage = (id) => {
+    setImages((prev) => prev.filter((img) => img.id !== id));
+    // TODO: Add Realm deletion logic here
   };
 
   return (
@@ -129,9 +194,9 @@ const ProjectView = () => {
                 borderWidth={1}
                 borderColor="$primary"
                 backgroundColor="$bg"
-                hoverStyle={{ backgroundColor: '$hoverBackground' }}
-                pressStyle={{ backgroundColor: '$hoverBackground' }}
-                onPress={toggleMergeMode}
+                hoverStyle={{ backgroundColor: "$hoverBackground" }}
+                pressStyle={{ backgroundColor: "$hoverBackground" }}
+                onPress={() => toggleMergeMode(img)}
               >
                 Merge Analysis
               </Button>
@@ -148,11 +213,13 @@ const ProjectView = () => {
                     color="primary"
                     borderColor="$primary"
                     backgroundColor="$bg"
-                    hoverStyle={{ backgroundColor: '$hoverBackground' }}
-                    pressStyle={{ backgroundColor: '$hoverBackground' }}
+                    hoverStyle={{ backgroundColor: "$hoverBackground" }}
+                    pressStyle={{ backgroundColor: "$hoverBackground" }}
                     onPress={() => {
                       setMergeMode(false);
-                      setImages(prev => prev.map(img => ({ ...img, isSelected: false })));
+                      setImages((prev) =>
+                        prev.map((img) => ({ ...img, isSelected: false }))
+                      );
                     }}
                   >
                     Cancel
@@ -167,8 +234,8 @@ const ProjectView = () => {
                     borderWidth={1}
                     borderColor="$primary"
                     backgroundColor="$primary"
-                    hoverStyle={{ backgroundColor: '$primary' }}
-                    pressStyle={{ backgroundColor: '$primary' }}
+                    hoverStyle={{ backgroundColor: "$primary" }}
+                    pressStyle={{ backgroundColor: "$primary" }}
                     onPress={toggleMergeMode}
                   >
                     Apply Merge
@@ -187,8 +254,8 @@ const ProjectView = () => {
               borderWidth={1}
               borderColor="$primary"
               backgroundColor="$bg"
-              hoverStyle={{ backgroundColor: '$hoverBackground' }}
-              pressStyle={{ backgroundColor: '$hoverBackground' }}
+              hoverStyle={{ backgroundColor: "$hoverBackground" }}
+              pressStyle={{ backgroundColor: "$hoverBackground" }}
               onPress={() => setShowCaptureDialog(true)}
             >
               Add Image
@@ -205,8 +272,8 @@ const ProjectView = () => {
               borderWidth={1}
               borderColor="$primary"
               backgroundColor="$bg"
-              hoverStyle={{ backgroundColor: '$hoverBackground' }}
-              pressStyle={{ backgroundColor: '$hoverBackground' }}
+              hoverStyle={{ backgroundColor: "$hoverBackground" }}
+              pressStyle={{ backgroundColor: "$hoverBackground" }}
               onPress={() => setShowUploadDialog(true)}
             >
               Upload Image
@@ -215,8 +282,10 @@ const ProjectView = () => {
         </XStack>
 
         {/* Image Grid */}
-        <ScrollView contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-          {images.map(img => (
+        <ScrollView
+          contentContainerStyle={{ flexDirection: "row", flexWrap: "wrap" }}
+        >
+          {images.map((img) => (
             <Card
               key={img.id}
               width={180}
@@ -226,7 +295,7 @@ const ProjectView = () => {
               onPress={() => {
                 if (!mergeMode) {
                   router.push({
-                    pathname: '/workspace',
+                    pathname: "/workspace",
                     params: {
                       id: name,
                       name: img.name,
@@ -247,7 +316,7 @@ const ProjectView = () => {
                       }
                     }}
                     style={{
-                      position: 'absolute',
+                      position: "absolute",
                       top: 8,
                       left: 8,
                       zIndex: 10,
@@ -259,32 +328,51 @@ const ProjectView = () => {
                     <Checkbox
                       checked={img.isSelected}
                       size="$3"
-                      backgroundColor={img.isSelected ? '$primary' : '$bg'}
+                      backgroundColor={img.isSelected ? "$primary" : "$bg"}
                       borderColor="$primary"
                       borderWidth={2}
                       color="$bg"
                       pointerEvents="none"
                     >
                       <Checkbox.Indicator>
-                        <CheckIcon size={12} color={img.isSelected ? '$bg' : '$primary'} />
+                        <CheckIcon
+                          size={12}
+                          color={img.isSelected ? "$bg" : "$primary"}
+                        />
                       </Checkbox.Indicator>
                     </Checkbox>
                   </TouchableOpacity>
                 )}
 
                 {/* Trash button */}
-                <XStack justifyContent="flex-end" position="absolute" top={4} right={4} zIndex={10}>
-                  <Button size="$2" circular icon={Trash} />
+                <XStack
+                  justifyContent="flex-end"
+                  position="absolute"
+                  top={4}
+                  right={4}
+                  zIndex={10}
+                >
+                  <Button
+                    size="$2"
+                    circular
+                    icon={Trash}
+                    onPress={() => deleteImage(img.id)}
+                  />
                 </XStack>
 
                 <Image
                   source={{ uri: img.uri }}
-                  style={{ width: '100%', height: 100, borderRadius: 8 }}
+                  style={{ width: "100%", height: 100, borderRadius: 8 }}
                 />
                 <SizableText size="$2" fontWeight="700" paddingLeft="$2">
                   {img.name}
                 </SizableText>
-                <SizableText size="$2" color="$textSecondary" paddingLeft="$2" marginBottom="$2">
+                <SizableText
+                  size="$2"
+                  color="$textSecondary"
+                  paddingLeft="$2"
+                  marginBottom="$2"
+                >
                   {img.timestamp}
                 </SizableText>
               </YStack>
@@ -328,29 +416,36 @@ const ProjectView = () => {
                 <Text fontWeight="700" fontSize={15}>
                   Image Check Criteria
                 </Text>
-                <Text fontSize={14}>Before analysis, each image must meet these standards:</Text>
+                <Text fontSize={14}>
+                  Before analysis, each image must meet these standards:
+                </Text>
                 <YStack gap={10} paddingLeft={16}>
                   <Text fontSize={14} color="$textSecondary">
-                    • <Text fontWeight="400">Angle</Text> – Camera should be perpendicular to the
-                    surface (±10° tolerance).
+                    • <Text fontWeight="400">Angle</Text> – Camera should be
+                    perpendicular to the surface (±10° tolerance).
                   </Text>
                   <Text fontSize={14} color="$textSecondary">
-                    • <Text fontWeight="400">Brightness</Text> – Avoid overexposure; histogram
-                    should not be clipped at either end.
+                    • <Text fontWeight="400">Brightness</Text> – Avoid
+                    overexposure; histogram should not be clipped at either end.
                   </Text>
                   <Text fontSize={14} color="$textSecondary">
-                    • <Text fontWeight="400">Quality</Text> – No visible blur; motion blur &lt; 1
-                    pixel.
+                    • <Text fontWeight="400">Quality</Text> – No visible blur;
+                    motion blur &lt; 1 pixel.
                   </Text>
                   <Text fontSize={14} color="$textSecondary">
-                    • <Text fontWeight="400">Resolution</Text> – Minimum 1920×1080 px (2MP);
-                    recommended 12MP+ for detailed analysis.
+                    • <Text fontWeight="400">Resolution</Text> – Minimum
+                    1920×1080 px (2MP); recommended 12MP+ for detailed analysis.
                   </Text>
                 </YStack>
               </YStack>
 
               {/* Buttons */}
-              <YStack gap={6} padding={16} borderTopWidth={1} borderColor="$borderColor">
+              <YStack
+                gap={6}
+                padding={16}
+                borderTopWidth={1}
+                borderColor="$borderColor"
+              >
                 <Button
                   onPress={() => {
                     setShowCaptureDialog(false);
@@ -362,12 +457,12 @@ const ProjectView = () => {
                   theme="blue"
                   // flex={1}
                   hoverStyle={{
-                    backgroundColor: '$primary',
-                    color: '$bg',
+                    backgroundColor: "$primary",
+                    color: "$bg",
                   }}
                   pressStyle={{
-                    backgroundColor: '$primary',
-                    color: '$bg',
+                    backgroundColor: "$primary",
+                    color: "$bg",
                     opacity: 1,
                   }}
                 >
@@ -425,6 +520,7 @@ const ProjectView = () => {
                 <YStack>
                   <Text color="$textSecondary">Upload</Text>
                 </YStack>
+                
 
                 <YStack
                   borderStyle="dashed"
@@ -434,12 +530,15 @@ const ProjectView = () => {
                   padding={16}
                   alignItems="center"
                   justifyContent="center"
-                  onClick={() => pickImage()}
-                  onDragOver={e => {
+                  onPress={() => {
+                    pickImage();
+                    setShowUploadDialog(false);
+                  }}
+                  onDragOver={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
                   }}
-                  onDrop={e => {
+                  onDrop={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
 
@@ -483,16 +582,16 @@ const ProjectView = () => {
                   backgroundColor="$primary"
                   color="$bg"
                   hoverStyle={{
-                    backgroundColor: '$primary',
-                    color: '$bg',
+                    backgroundColor: "$primary",
+                    color: "$bg",
                   }}
                   pressStyle={{
-                    backgroundColor: '$primary',
-                    color: '$bg',
+                    backgroundColor: "$primary",
+                    color: "$bg",
                     opacity: 1,
                   }}
                   onPress={() => {
-                    // pickImage();
+                    // pickImage(),
                     setShowUploadDialog(false);
                   }}
                 >
