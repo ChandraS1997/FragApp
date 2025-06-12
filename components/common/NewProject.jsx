@@ -5,6 +5,7 @@ import { useState } from "react";
 import mime from 'react-native-mime-types';
 import uuid from "react-native-uuid";
 
+import { router } from "expo-router";
 import {
   Button,
   Dialog,
@@ -164,6 +165,17 @@ export default function CreateProjectModal({
       setDesc("");
       setImages([]);
       onOpenChange(false);
+      router.push({
+        pathname: '/projectView',
+        params: {
+          id: newProject.id, // or a unique ID
+          name: newProject.name,
+          desc: newProject.desc,
+          updated: newProject.updated,
+          img_url: newProject.img_url,
+        }
+      })
+
     } catch (err) {
       console.error("❌ Failed to add project:", err);
     } finally {

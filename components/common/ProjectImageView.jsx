@@ -1,10 +1,9 @@
-import { View, Text, XStack, YStack, useWindowDimensions, Card } from "tamagui";
-import { ScrollView, Image } from "react-native";
 import { Button } from "@tamagui/button";
 import { Pencil, Trash2 } from "@tamagui/lucide-icons";
-import { useState } from "react";
 import { useRouter } from "expo-router";
-import { Alert } from "react-native";
+import { useState } from "react";
+import { Alert, Image, ScrollView } from "react-native";
+import { Card, Text, XStack, YStack, useWindowDimensions } from "tamagui";
 import { deleteProject } from "../../backend/functions/ProjectsFunction";
 
 const data = Array.from({ length: 50 }).map((_, i) => ({
@@ -26,7 +25,6 @@ export default function ProjectImageView({
   const scrollMaxHeight = height * 0.6;
   const [page, setPage] = useState(1);
   const router = useRouter();
-
   // console.log(projects);
   const data = projects.map((project, index) => ({
     no: `${String(index + 1).padStart(2, "0")}`,
@@ -34,9 +32,8 @@ export default function ProjectImageView({
     updated: new Date(project.updated_at).toLocaleString(), // Format if needed
     desc: project.desc,
     id: project.id,
-    img_url: project.img_url,
+    img_url: JSON.parse(project.img_url),
   }));
-
   const filteredData = data.filter((item) =>
     item.name.toLowerCase().includes(query.toUpperCase())
   );
@@ -49,7 +46,7 @@ export default function ProjectImageView({
   );
   const handlePrev = () => setPage((p) => Math.max(1, p - 1));
   const handleNext = () => setPage((p) => Math.min(totalPages, p + 1));
-
+  //console.log("PAginated Data:", paginatedData);
   const handleDelete = async (projectId) => {
     Alert.alert(
       "Confirm Delete",
@@ -121,14 +118,12 @@ export default function ProjectImageView({
                       >
                         <Image
                           source={
-                            item.img_url
-                              ? { uri: item.img_url }
+                            item.img_url?.length > 0
+                              ? { uri: item.img_url[0].uri }
                               : require("../../assets/demo.png")
                           }
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                          }}
+                          style={{ width: "100%", height: "100%", borderRadius: 8 }}
+                          onError={(e) => console.warn("Image failed to load:", item.img_url?.[0], e.nativeEvent.error)}
                           resizeMode="cover"
                         />
                       </YStack>

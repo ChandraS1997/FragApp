@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react';
-import { useRouter, useLocalSearchParams } from 'expo-router';
-import Header from '../../components/common/Header';
-import { XStack, Text, YStack, View } from 'tamagui';
 import { ArrowLeft } from '@tamagui/lucide-icons';
-import SideToolbar from '../../components/common/SideToolbar';
-import ViewControls from '../../components/common/ViewControls';
-import SidebarGraph from '../../components/common/SidebarGraph';
-import ParamsTable from '../../components/common/ParamsTable';
-import SizeInfoTable from '../../components/common/SizeInfoTable';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useEffect, useState } from 'react';
+import { Image, Text, View, XStack, YStack } from 'tamagui';
 import DataTable from '../../components/common/DataTable';
+import Header from '../../components/common/Header';
+import ParamsTable from '../../components/common/ParamsTable';
+import SidebarGraph from '../../components/common/SidebarGraph';
+import SideToolbar from '../../components/common/SideToolbar';
+import SizeInfoTable from '../../components/common/SizeInfoTable';
+import ViewControls from '../../components/common/ViewControls';
 
 const data = [
   {
@@ -127,11 +127,16 @@ const data = [
 
 const WorkSpace = () => {
   const router = useRouter();
-  const { id, name, mode } = useLocalSearchParams();
+  const { id, img_name, mode, img_url } = useLocalSearchParams();
   const [sidebarMode, setSidebarMode] = useState('tools'); // 'tools' or 'graph'
   const [selectedGraph, setSelectedGraph] = useState('graph1');
   const handleBack = () => {
-    router.push('/projectView');
+    router.push({
+      pathname: '/projectView',
+      params: {
+        name: id,
+      }
+    });
   };
 
   useEffect(() => {
@@ -149,7 +154,7 @@ const WorkSpace = () => {
             <Text color="$bg" paddingLeft={10}>
               {id}
             </Text>
-            <Text color="$bg">/{name}</Text>
+            <Text color="$bg">/{img_name}</Text>
           </XStack>
         }
       />
@@ -167,9 +172,12 @@ const WorkSpace = () => {
 
         <View f={1} position="relative" justifyContent="center" alignItems="center">
           {sidebarMode === 'tools' ? (
-            <Text size={80} color="$textColor">
-              Tool View
-            </Text>
+            <Image
+              source={{ uri: img_url }}
+              style={{ width: "98%", height: "95%", borderRadius: 8 }}
+              onError={(e) => console.warn('Image failed to load:', e.nativeEvent.error)}
+              resizeMode="cover"
+            />
           ) : (
             <XStack f={1} width="100%" height="100%">
               {/* Graph placeholder */}
