@@ -11,6 +11,7 @@ import * as MediaLibrary from "expo-media-library"; // Added MediaLibrary import
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { Alert, ScrollView, TouchableOpacity } from "react-native";
+import uuid from "react-native-uuid";
 import {
   Button,
   Card,
@@ -23,7 +24,6 @@ import {
   XStack,
   YStack,
 } from "tamagui";
-import { v4 as uuidv4 } from "uuid";
 import Header from "../../components/common/Header";
 // getRealmInstance is imported here but not directly used in pickImage, as addImages handles it
 import * as FileSystem from "expo-file-system";
@@ -47,53 +47,28 @@ const ProjectView = () => {
   useEffect(() => {
     loadImages();
     requestPermissions();
-  }, []);
+  }, [id]);
 
-  useEffect(() => {
-    if (img_url) {
-      try {
-        const parsed = JSON.parse(img_url); // Parse stringified array
-        if (Array.isArray(parsed)) {
-          const formatted = parsed.map((uri, index) => ({
-            id: `static-${index}`,
-            uri,
-            created_at: new Date(),
-            name: uri.split('/').pop(),
-          }));
-          setImages((prev) => [...formatted, ...prev]);
-        }
-      } catch (err) {
-        console.error("Failed to parse img_url from route params:", err);
-      }
-    }
-  }, [img_url]);
-
- const loadImages = async () => {
+const loadImages = async () => {
   try {
     const realm = await getRealmInstance();
-    const project = realm.objectForPrimaryKey("Project", id);
 
-    if (!project) {
-      console.warn("⚠️ Project not found for ID:", id);
-      return;
-    }
+    // Get all images that match the projectId
+    const imageResults = realm
+      .objects("Images")
+      .filtered("project_id == $0", id);
 
-    let parsed = [];
-    try {
-      parsed = JSON.parse(project.img_url || "[]");
-    } catch (err) {
-      console.warn("⚠️ Failed to parse img_url from Realm:", err);
-    }
-
-    const formatted = parsed.map((uri, index) => ({
-      id: `project-img-${index}-${Date.now()}`, // unique enough
-      uri,
-      created_at: new Date(),
-      name: uri.split("/").pop(),
+    // Convert Realm results to plain JavaScript objects
+    const fetchedImages = imageResults.map((img) => ({
+      id: img.id,
+      uri: img.img_url,
+      created_at: img.created_at,
+      updated_at: img.updated_at,
+      name: img.img_url.split("/").pop() ?? "unknown.jpg",
+      isAnalysed: img.isAnalysed ?? false, // fallback if undefined
     }));
-
-    setImages(formatted);
-    console.log("✅ Loaded images from Realm:", formatted);
+    setImages(fetchedImages);
+   // you can also call setImages(images) if using React state
   } catch (err) {
     console.error("❌ Failed to load images:", err);
   }
@@ -145,26 +120,37 @@ const ProjectView = () => {
             return dest;
           })
         );
-        const realm = await getRealmInstance();
-        const project = realm.objectForPrimaryKey("Project", id);
-        if (!project) {
-          console.warn("❌ Project not found for ID:", id);
-          return;
-        }
-        let images = JSON.parse(img_url);
-        for(var i = 0; i < selected.length; i++) {
-          images.push(selected[i]);
-        }
-        realm.write(() => {
-          project.img_url = JSON.stringify(images);
-          project.updated_at = new Date();
-        });
-        await loadImages();
+        await insertMultipleImages(selected, id);
       }
     } catch (err) {
       console.error("❌ ERROR in pickImage:", err);
     }
   };
+
+    const insertMultipleImages = async (imageUris, projectId) => {
+  try {
+    const realm = await getRealmInstance();
+
+    realm.write(() => {
+      imageUris.forEach((uri) => {
+        realm.create("Images", {
+          id: uuid.v4(),
+          img_url: uri, // store directly, not JSON.stringify
+          project_id: projectId,
+          created_at: new Date(),
+          updated_at: new Date(),
+          created_by: "admin",
+          updated_by: "admin",
+        });
+      });
+    });
+
+    console.log("✅ All images inserted separately into Realm.");
+    await loadImages();
+  } catch (error) {
+    console.error("❌ Failed to insert images:", error);
+  }
+};
 
   const handleCapture = async () => {
     let result = await ImagePicker.launchCameraAsync({
@@ -270,7 +256,7 @@ const ProjectView = () => {
                 backgroundColor="$bg"
                 hoverStyle={{ backgroundColor: "$hoverBackground" }}
                 pressStyle={{ backgroundColor: "$hoverBackground" }}
-                onPress={() => toggleMergeMode(img)}
+                onPress={() => toggleMergeMode()}
               >
                 Merge Analysis
               </Button>
@@ -371,7 +357,8 @@ const ProjectView = () => {
                   router.push({
                     pathname: "/workspace",
                     params: {
-                      id: name,
+                      id: id,
+                      name: name,
                       img_name: img.name,
                       img_url: img.uri,
                     },
@@ -434,7 +421,7 @@ const ProjectView = () => {
                     onPress={() => deleteImage(img.id)}
                   />
                 </XStack>
-
+              
                 <Image
                   source={{ uri: img.uri }}
                   style={{ width: "100%", height: 100, borderRadius: 8 }}
@@ -450,7 +437,7 @@ const ProjectView = () => {
                   paddingLeft="$2"
                   marginBottom="$2"
                 >
-                  {updated}
+                  {new Date(img.updated_at).toLocaleString()}
                 </SizableText>
               </YStack>
             </Card>

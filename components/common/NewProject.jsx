@@ -18,6 +18,7 @@ import {
   XStack,
   YStack,
 } from "tamagui";
+import getRealmInstance from "../../backend/database/realm";
 import { addProject } from "../../backend/functions/ProjectsFunction";
 import { requestMediaLibraryPermission } from "../../backend/functions/RequestFunction";
 
@@ -107,6 +108,30 @@ export default function CreateProjectModal({
     }
   };
 
+  const insertMultipleImages = async (imageUris, projectId) => {
+  try {
+    const realm = await getRealmInstance();
+
+    realm.write(() => {
+      imageUris.forEach((uri) => {
+        realm.create("Images", {
+          id: uuid.v4(),
+          img_url: uri, // store directly, not JSON.stringify
+          project_id: projectId,
+          created_at: new Date(),
+          updated_at: new Date(),
+          created_by: "admin",
+          updated_by: "admin",
+        });
+      });
+    });
+
+    console.log("✅ All images inserted separately into Realm.");
+  } catch (error) {
+    console.error("❌ Failed to insert images:", error);
+  }
+};
+
 
   const handleSubmit = async () => {
     if (isSubmitting) return;
@@ -155,15 +180,15 @@ export default function CreateProjectModal({
       id: uuid.v4(),
       name,
       desc,
-      img_url: JSON.stringify(saveImages),
+      img_url: '',
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
       created_by: "admin",
       updated_by: "admin",
     };
-
     try {
       await addProject(newProject);
+      await insertMultipleImages(saveImages, newProject.id);
       setProjects((prev) => [newProject, ...prev]);
       setName("");
       setDesc("");

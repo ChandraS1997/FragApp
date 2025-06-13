@@ -1,9 +1,10 @@
 import { Button } from "@tamagui/button";
 import { Pencil, Trash2 } from "@tamagui/lucide-icons";
 import { useRouter } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert, Image, ScrollView } from "react-native";
 import { Card, Text, XStack, YStack, useWindowDimensions } from "tamagui";
+import getRealmInstance from "../../backend/database/realm";
 import { deleteProject } from "../../backend/functions/ProjectsFunction";
 
 const data = Array.from({ length: 50 }).map((_, i) => ({
@@ -24,15 +25,44 @@ export default function ProjectImageView({
   const { height } = useWindowDimensions();
   const scrollMaxHeight = height * 0.6;
   const [page, setPage] = useState(1);
+  const [projectList,setProjectList] = useState([]);
   const router = useRouter();
   // console.log(projects);
-  const data = projects.map((project, index) => ({
+
+  useEffect(() => {
+    loadProjects();
+  }, [projects]);
+   
+  const loadProjects = async () => {
+    try {
+      const realm = await getRealmInstance();
+      const projects = realm.objects("Project");
+      const images = realm.objects("Images");
+      const enhancedProjects = projects.map((project) => {
+      const projectImages = images.filtered("project_id == $0", project.id);
+      let thumbnail = null;
+      if (projectImages.length > 0) {
+          const parsed = projectImages[0].img_url;
+          thumbnail = parsed;
+      }
+
+      return {
+        ...project,
+        thumbnail,
+      };
+    });
+    setProjectList(enhancedProjects);
+    } catch (error) {
+      console.error("Error loading projects:", error);
+    }
+  }
+  const data = projectList.map((project, index) => ({
     no: `${String(index + 1).padStart(2, "0")}`,
     name: project.name,
     updated: new Date(project.updated_at).toLocaleString(), // Format if needed
     desc: project.desc,
     id: project.id,
-    img_url: project.img_url,
+    img_url: project.thumbnail,
   }));
   const filteredData = data.filter((item) =>
     item.name.toLowerCase().includes(query.toUpperCase())
@@ -118,12 +148,12 @@ export default function ProjectImageView({
                       >
                         <Image
                           source={
-                            item.img_url?.length > 0
-                              ? { uri: JSON.parse(item.img_url)[0] }
+                            item.img_url
+                              ? { uri: item.img_url}
                               : require("../../assets/demo.png")
                           }
                           style={{ width: "100%", height: "100%", borderRadius: 8 }}
-                          onError={(e) => console.warn("Image failed to load:", JSON.parse(item.img_url)[0], e.nativeEvent.error)}
+                          onError={(e) => console.warn("Image failed to load:", item.img_url, e.nativeEvent.error)}
                           resizeMode="cover"
                         />
                       </YStack>

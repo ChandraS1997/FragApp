@@ -26,5 +26,6 @@ export const ProjectSchema = {
       updated_at: "date",
       created_by: "string",
       updated_by: "string",
+      //isAnalysed: { type: "bool", default: false },
     },
   };

@@ -127,14 +127,15 @@ const data = [
 
 const WorkSpace = () => {
   const router = useRouter();
-  const { id, img_name, mode, img_url } = useLocalSearchParams();
+  const { id, name, img_name, mode, img_url } = useLocalSearchParams();
   const [sidebarMode, setSidebarMode] = useState('tools'); // 'tools' or 'graph'
   const [selectedGraph, setSelectedGraph] = useState('graph1');
   const handleBack = () => {
     router.push({
       pathname: '/projectView',
       params: {
-        name: id,
+        name: name,
+        id: id,
       }
     });
   };
@@ -152,7 +153,7 @@ const WorkSpace = () => {
           <XStack alignItems="center">
             <ArrowLeft size={20} onPress={handleBack} style={{ cursor: 'pointer' }} color="$bg" />
             <Text color="$bg" paddingLeft={10}>
-              {id}
+              {name}
             </Text>
             <Text color="$bg">/{img_name}</Text>
           </XStack>

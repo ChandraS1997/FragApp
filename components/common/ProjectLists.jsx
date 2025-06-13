@@ -4,7 +4,7 @@ import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Alert, ScrollView } from "react-native";
 import { Card, Text, XStack, YStack, useWindowDimensions } from "tamagui";
-import { deleteProject } from "../../backend/functions/ProjectsFunction"; // adjust path if needed
+import { deleteProject } from "../../backend/functions/ProjectsFunction";
 
 const ITEMS_PER_PAGE = 15;
 
@@ -14,7 +14,6 @@ export default function ProjectLists({ query, projects = [], setProjects }) {
   const [page, setPage] = useState(1);
   const router = useRouter();
   // console.log(projects)
-
   const data = projects.map((project, index) => ({
     no: `${String(index + 1).padStart(2, "0")}`,
     name: project.name,
