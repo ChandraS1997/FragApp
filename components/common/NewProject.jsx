@@ -147,11 +147,15 @@ export default function CreateProjectModal({
     }
 
     setIsSubmitting(true);
+    const saveImages = new Array();
+    for(var j = 0; j< images.length; j++){
+      saveImages.push(images[j]);
+    }
     const newProject = {
       id: uuid.v4(),
       name,
       desc,
-      img_url: JSON.stringify(images),
+      img_url: JSON.stringify(saveImages),
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
       created_by: "admin",

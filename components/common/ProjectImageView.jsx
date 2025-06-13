@@ -32,7 +32,7 @@ export default function ProjectImageView({
     updated: new Date(project.updated_at).toLocaleString(), // Format if needed
     desc: project.desc,
     id: project.id,
-    img_url: JSON.parse(project.img_url),
+    img_url: project.img_url,
   }));
   const filteredData = data.filter((item) =>
     item.name.toLowerCase().includes(query.toUpperCase())
@@ -119,11 +119,11 @@ export default function ProjectImageView({
                         <Image
                           source={
                             item.img_url?.length > 0
-                              ? { uri: item.img_url[0].uri }
+                              ? { uri: JSON.parse(item.img_url)[0] }
                               : require("../../assets/demo.png")
                           }
                           style={{ width: "100%", height: "100%", borderRadius: 8 }}
-                          onError={(e) => console.warn("Image failed to load:", item.img_url?.[0], e.nativeEvent.error)}
+                          onError={(e) => console.warn("Image failed to load:", JSON.parse(item.img_url)[0], e.nativeEvent.error)}
                           resizeMode="cover"
                         />
                       </YStack>
