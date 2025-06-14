@@ -1,17 +1,18 @@
-import { Separator, XStack, YStack, ScrollView } from 'tamagui';
-import Scale from '../../components/common/Scale';
-import Edit from '../../components/common/Edit';
-import Logic from '../../components/common/Logic';
-import Color from '../../components/common/Color';
-import SidebarButton from './SideBarButton';
-import Graph from '../../assets/icons/graph.svg';
+import { router } from 'expo-router';
+import { ScrollView, Separator, XStack, YStack } from 'tamagui';
 import AutoDetect from '../../assets/icons/autoDetect.svg';
-import CustomPopover from './CustomPopover';
 import DataIcon from '../../assets/icons/data.svg';
+import Graph from '../../assets/icons/graph.svg';
 import HeatMapIcon from '../../assets/icons/heatMap.svg';
 import MuckpileIcon from '../../assets/icons/muckpile.svg';
+import Color from '../../components/common/Color';
+import Edit from '../../components/common/Edit';
+import Logic from '../../components/common/Logic';
+import Scale from '../../components/common/Scale';
+import CustomPopover from './CustomPopover';
+import SidebarButton from './SideBarButton';
 
-const SideToolbar = ({ onSwitchSidebar }) => {
+const SideToolbar = ({id, name, img_name, img_url}) => {
   return (
     <YStack
       width={85}
@@ -53,7 +54,17 @@ const SideToolbar = ({ onSwitchSidebar }) => {
           label="Graph"
           hoverColor="$primary"
           defaultColor="$primary"
-          onPress={onSwitchSidebar}
+          onPress={() => {
+            router.push({
+              pathname: '/graphView',
+              params: {
+                name: name,
+                id: id,
+                img_name: img_name,
+                img_url: img_url
+              }
+            })
+          }}
         />
       </YStack>
     </YStack>

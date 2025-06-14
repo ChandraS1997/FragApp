@@ -1,13 +1,13 @@
 import { useState } from 'react';
-import { YStack, ScrollView } from 'tamagui';
-import SidebarButton from './SideBarButton';
+import { ScrollView, YStack } from 'tamagui';
 import GraphIcon from '../../assets/icons/graph.svg';
 import Graph2Icon from '../../assets/icons/graph2.svg';
-import ResultModal from './ResultModal';
 import Export from './Export';
 import Result from './Result';
+import ResultModal from './ResultModal';
+import SidebarButton from './SideBarButton';
 
-const SidebarGraph = ({ onSwitchSidebar, selectedGraph, onSelectGraph }) => {
+const SidebarGraph = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [resultValue, setResultValue] = useState('');
 
@@ -53,8 +53,6 @@ const SidebarGraph = ({ onSwitchSidebar, selectedGraph, onSelectGraph }) => {
                 size={12}
                 hoverColor="$primary"
                 defaultColor="$primary"
-                isActive={selectedGraph === 'graph1'}
-                onPress={() => onSelectGraph('graph1')}
               />
               <SidebarButton
                 icon={Graph2Icon}
@@ -62,8 +60,6 @@ const SidebarGraph = ({ onSwitchSidebar, selectedGraph, onSelectGraph }) => {
                 size={12}
                 hoverColor="$primary"
                 defaultColor="$primary"
-                isActive={selectedGraph === 'graph2'}
-                onPress={() => onSelectGraph('graph2')}
               />
             </YStack>
 
@@ -98,7 +94,6 @@ const SidebarGraph = ({ onSwitchSidebar, selectedGraph, onSelectGraph }) => {
             label="Analysis"
             hoverColor="$primary"
             defaultColor="$primary"
-            onPress={onSwitchSidebar}
           />
         </YStack>
       </YStack>
