@@ -31,9 +31,13 @@ const SideToolbar = ({id, name, img_name, img_url, scaleSettings, setScaleSettin
       >
         <YStack gap={10} width="100%" alignItems="center">
           <Scale scaleSettings={scaleSettings} setScaleSettings={setScaleSettings} />
+            <Separator />
           <Logic />
+            <Separator />
           <Edit />
+            <Separator />
           <Color />
+            <Separator />
           <CustomPopover
             trigger={<SidebarButton icon={DataIcon} label="Data" />}
             content={
@@ -45,11 +49,8 @@ const SideToolbar = ({id, name, img_name, img_url, scaleSettings, setScaleSettin
           />
           <Separator />
           <SidebarButton icon={AutoDetect} label="Auto Detect" />
-        </YStack>
-      </ScrollView>
-
-      <YStack width="100%" alignItems="center" marginTop={16}>
-        <SidebarButton
+          <Separator />
+          <SidebarButton
           icon={Graph}
           label="Graph"
           hoverColor="$primary"
@@ -66,7 +67,8 @@ const SideToolbar = ({id, name, img_name, img_url, scaleSettings, setScaleSettin
             })
           }}
         />
-      </YStack>
+        </YStack>
+      </ScrollView>
     </YStack>
   );
 };

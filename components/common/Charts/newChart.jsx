@@ -45,14 +45,14 @@ const NewChart = ({rawData}) => {
           thickness2={2}
           yAxisThickness={1}
           yAxisTextStyle={{ color: 'gray' }}
-          yAxisLabelWidth={40}
+          yAxisLabelWidth={60}
           xAxisMin
           yAxisMinValue={Math.floor(yMin * 0.9)} // padding bottom
           yAxisMaxValue={Math.ceil(yMax * 1.1)}  // padding top
           showLine
           showXAxis
           showYAxis
-          spacing={28} // auto spacing
+          spacing={40} // auto spacing
           initialSpacing={10}
           hideDataPoints
           curved={false}

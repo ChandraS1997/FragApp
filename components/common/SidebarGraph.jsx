@@ -79,23 +79,21 @@ const SidebarGraph = () => {
               <Export />
             </YStack>
           </YStack>
+          <YStack
+            width="100%"
+            paddingTop={16}
+            borderTopWidth={1}
+            borderTopColor="$borderColor"
+            alignItems="center"
+          >
+            <SidebarButton
+              icon={Graph2Icon}
+              label="Analysis"
+              hoverColor="$primary"
+              defaultColor="$primary"
+            />
+          </YStack>
         </ScrollView>
-
-        {/* Fixed Bottom Button */}
-        <YStack
-          width="100%"
-          paddingTop={16}
-          borderTopWidth={1}
-          borderTopColor="$borderColor"
-          alignItems="center"
-        >
-          <SidebarButton
-            icon={Graph2Icon}
-            label="Analysis"
-            hoverColor="$primary"
-            defaultColor="$primary"
-          />
-        </YStack>
       </YStack>
 
       {/* Modal */}

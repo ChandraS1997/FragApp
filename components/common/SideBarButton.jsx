@@ -32,7 +32,7 @@ const SidebarButton = forwardRef(
     const backgroundColor = isActive ? '$primary' : '$bg';
 
     return (
-      <YStack alignItems="center" gap={5} width={40}>
+      <YStack alignItems="center" gap={5} width={50}>
         <Button
           ref={ref}
           {...props}
