@@ -1,5 +1,4 @@
-import React from 'react';
-import { YStack, XStack, Text, ScrollView } from 'tamagui';
+import { ScrollView, Text, XStack, YStack } from 'tamagui';
 
 const SizeInfoTable = ({ data = [] }) => {
   return (
