@@ -1,5 +1,6 @@
 import { ArrowLeft } from '@tamagui/lucide-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useState } from 'react';
 import { Image, Text, View, XStack, YStack } from 'tamagui';
 import Header from '../../components/common/Header';
 import SideToolbar from '../../components/common/SideToolbar';
@@ -8,6 +9,16 @@ import ViewControls from '../../components/common/ViewControls';
 const WorkSpace = () => {
   const router = useRouter();
   const { id, name, img_name, mode, img_url } = useLocalSearchParams();
+  const [scaleSettings, setScaleSettings] = useState({
+    Dual: false,
+    ScaleLength: '10',
+    ScaleFactor: '50',
+    Unit: 'mm',
+    Ignore: false,
+    ScaleUpperLength: '',
+    ScaleLowerLength: '',
+  });
+  console.log("scaleSettings", scaleSettings);
   const handleBack = () => {
     router.push({
       pathname: '/projectView',
@@ -32,7 +43,7 @@ const WorkSpace = () => {
         }
       />
       <XStack f={1}>
-          <SideToolbar id={id} name={name} img_name={img_name} img_url={img_url} />
+          <SideToolbar id={id} name={name} img_name={img_name} img_url={img_url} scaleSettings={scaleSettings} setScaleSettings={setScaleSettings} />
 
           <View f={1} position="relative" justifyContent="center" alignItems="center">
              <Image

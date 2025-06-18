@@ -12,7 +12,7 @@ import Scale from '../../components/common/Scale';
 import CustomPopover from './CustomPopover';
 import SidebarButton from './SideBarButton';
 
-const SideToolbar = ({id, name, img_name, img_url}) => {
+const SideToolbar = ({id, name, img_name, img_url, scaleSettings, setScaleSettings}) => {
   return (
     <YStack
       width={85}
@@ -30,7 +30,7 @@ const SideToolbar = ({id, name, img_name, img_url}) => {
         }}
       >
         <YStack gap={10} width="100%" alignItems="center">
-          <Scale />
+          <Scale scaleSettings={scaleSettings} setScaleSettings={setScaleSettings} />
           <Logic />
           <Edit />
           <Color />

@@ -1,10 +1,18 @@
-import { useId, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
 import { Label, Switch, XStack } from 'tamagui';
 
-function SwitchWithLabel({ label, size = '$2', defaultChecked = false }) {
+function SwitchWithLabel({ label, size = '$2', defaultChecked = false, setScaleSettings }) {
   const [checked, setChecked] = useState(defaultChecked);
   const reactId = useId();
   const id = `switch-${size.replace('$', '')}-${reactId}`;
+
+  useEffect(() => {
+    if(label == 'Dual'){
+        setScaleSettings((prev) => ({ ...prev, Dual: checked }))
+    } else if(label == 'Ignore'){
+        setScaleSettings((prev) => ({ ...prev, Ignore: checked }))
+    }
+  },[checked])
 
   return (
     <XStack alignItems="center" gap="$4">
