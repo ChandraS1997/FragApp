@@ -7,7 +7,7 @@ import Result from './Result';
 import ResultModal from './ResultModal';
 import SidebarButton from './SideBarButton';
 
-const SidebarGraph = () => {
+const SidebarGraph = ({setSwitchGraph}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [resultValue, setResultValue] = useState('');
 
@@ -53,6 +53,7 @@ const SidebarGraph = () => {
                 size={12}
                 hoverColor="$primary"
                 defaultColor="$primary"
+                onPress={() => setSwitchGraph(false)}
               />
               <SidebarButton
                 icon={Graph2Icon}
@@ -60,6 +61,7 @@ const SidebarGraph = () => {
                 size={12}
                 hoverColor="$primary"
                 defaultColor="$primary"
+                onPress={() => setSwitchGraph(true)}
               />
             </YStack>
 

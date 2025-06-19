@@ -213,14 +213,14 @@ const loadImages = async () => {
     setImages((prev) => prev.filter((img) => img.id !== img_id));
     // TODO: Add Realm deletion logic here
     const realm = await getRealmInstance();
-        const project = realm.objectForPrimaryKey("Project", id);
-        if (!project) {
-          console.warn("❌ Project not found for ID:", id);
+        const imageToDelete = realm.objectForPrimaryKey("Images", img_id);
+        if (!imageToDelete) {
+          console.warn("❌ Project not found for ID:", img_id);
           return;
         }
+        const projectId = imageToDelete.project_id;
         realm.write(() => {
-          project.img_url = JSON.stringify(images);
-          project.updated_at = new Date();
+          realm.delete(imageToDelete);
         });
   };
 
