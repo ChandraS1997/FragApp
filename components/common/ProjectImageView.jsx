@@ -25,37 +25,37 @@ export default function ProjectImageView({
   const { height } = useWindowDimensions();
   const scrollMaxHeight = height * 0.6;
   const [page, setPage] = useState(1);
-  const [projectList,setProjectList] = useState([]);
+  const [projectList, setProjectList] = useState([]);
   const router = useRouter();
   // console.log(projects);
 
   useEffect(() => {
     loadProjects();
   }, [projects]);
-   
+
   const loadProjects = async () => {
     try {
       const realm = await getRealmInstance();
       const projects = realm.objects("Project");
       const images = realm.objects("Images");
       const enhancedProjects = projects.map((project) => {
-      const projectImages = images.filtered("project_id == $0", project.id);
-      let thumbnail = null;
-      if (projectImages.length > 0) {
+        const projectImages = images.filtered("project_id == $0", project.id);
+        let thumbnail = null;
+        if (projectImages.length > 0) {
           const parsed = projectImages[0].img_url;
           thumbnail = parsed;
-      }
+        }
 
-      return {
-        ...project,
-        thumbnail,
-      };
-    });
-    setProjectList(enhancedProjects);
+        return {
+          ...project,
+          thumbnail,
+        };
+      });
+      setProjectList(enhancedProjects);
     } catch (error) {
       console.error("Error loading projects:", error);
     }
-  }
+  };
   const data = projectList.map((project, index) => ({
     no: `${String(index + 1).padStart(2, "0")}`,
     name: project.name,
@@ -149,11 +149,21 @@ export default function ProjectImageView({
                         <Image
                           source={
                             item.img_url
-                              ? { uri: item.img_url}
+                              ? { uri: item.img_url }
                               : require("../../assets/demo.png")
                           }
-                          style={{ width: "100%", height: "100%", borderRadius: 8 }}
-                          onError={(e) => console.warn("Image failed to load:", item.img_url, e.nativeEvent.error)}
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            borderRadius: 8,
+                          }}
+                          onError={(e) =>
+                            console.warn(
+                              "Image failed to load:",
+                              item.img_url,
+                              e.nativeEvent.error
+                            )
+                          }
                           resizeMode="cover"
                         />
                       </YStack>

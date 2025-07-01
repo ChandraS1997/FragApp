@@ -1,13 +1,10 @@
+import { useEffect, useState } from "react";
 import { YStack } from "tamagui";
+import { getAllProjects } from "../../backend/functions/ProjectsFunction";
 import Header from "../../components/common/Header";
 import ProjectActionBar from "../../components/common/ProjectActionBar";
-import ProjectLists from "../../components/common/ProjectLists";
 import ProjectImageView from "../../components/common/ProjectImageView";
-import { useEffect, useState } from "react";
-import {
-  getAllProjects,
-  deleteProject,
-} from "../../backend/functions/ProjectsFunction";
+import ProjectLists from "../../components/common/ProjectLists";
 // import { usePaginatedData } from "../../backend/functions/Usepage";
 
 const Home = () => {

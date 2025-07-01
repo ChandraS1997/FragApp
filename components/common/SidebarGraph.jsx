@@ -1,17 +1,17 @@
-import { useState } from 'react';
-import { ScrollView, YStack } from 'tamagui';
-import GraphIcon from '../../assets/icons/graph.svg';
-import Graph2Icon from '../../assets/icons/graph2.svg';
-import Export from './Export';
-import Result from './Result';
-import ResultModal from './ResultModal';
-import SidebarButton from './SideBarButton';
+import { useState } from "react";
+import { ScrollView, YStack } from "tamagui";
+import GraphIcon from "../../assets/icons/graph.svg";
+import Graph2Icon from "../../assets/icons/graph2.svg";
+import Export from "./Export";
+import Result from "./Result";
+import ResultModal from "./ResultModal";
+import SidebarButton from "./SideBarButton";
 
-const SidebarGraph = ({setSwitchGraph}) => {
+const SidebarGraph = ({ setSwitchGraph, projectInfo, graphUris }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [resultValue, setResultValue] = useState('');
+  const [resultValue, setResultValue] = useState("");
 
-  const handleMetricPress = label => {
+  const handleMetricPress = (label) => {
     setResultValue(label);
     setIsModalOpen(true);
   };
@@ -31,10 +31,10 @@ const SidebarGraph = ({setSwitchGraph}) => {
         {/* Scrollable Section */}
         <ScrollView
           showsVerticalScrollIndicator={false}
-          style={{ width: '100%' }}
+          style={{ width: "100%" }}
           contentContainerStyle={{
-            width: '100%',
-            alignItems: 'center',
+            width: "100%",
+            alignItems: "center",
             flexGrow: 1,
           }}
         >
@@ -78,7 +78,7 @@ const SidebarGraph = ({setSwitchGraph}) => {
 
             {/* Export Buttons */}
             <YStack width="100%" gap={10}>
-              <Export />
+              <Export projectInfo={projectInfo} graphUris={graphUris} />
             </YStack>
           </YStack>
           <YStack
@@ -99,7 +99,11 @@ const SidebarGraph = ({setSwitchGraph}) => {
       </YStack>
 
       {/* Modal */}
-      <ResultModal open={isModalOpen} onOpenChange={setIsModalOpen} result={resultValue} />
+      <ResultModal
+        open={isModalOpen}
+        onOpenChange={setIsModalOpen}
+        result={resultValue}
+      />
     </>
   );
 };

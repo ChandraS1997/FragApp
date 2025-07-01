@@ -2,7 +2,7 @@ import * as FileSystem from "expo-file-system";
 import * as ImagePicker from "expo-image-picker";
 import * as MediaLibrary from "expo-media-library";
 import { useState } from "react";
-import mime from 'react-native-mime-types';
+import mime from "react-native-mime-types";
 import uuid from "react-native-uuid";
 
 import { router } from "expo-router";
@@ -32,7 +32,6 @@ export default function CreateProjectModal({
   const [desc, setDesc] = useState("");
   const [images, setImages] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
 
   const copyImageToStorage = async (uri) => {
     const customDir = `${FileSystem.documentDirectory}project_images/`;
@@ -81,13 +80,19 @@ export default function CreateProjectModal({
             const originalUri = asset.uri;
 
             // Create asset to resolve 'ph://' URI
-            const createdAsset = await MediaLibrary.createAssetAsync(originalUri);
-            const assetInfo = await MediaLibrary.getAssetInfoAsync(createdAsset);
+            const hasPermission = await requestMediaLibraryPermission(); //REquest permission
+            if (!hasPermission) return null;
+            const createdAsset = await MediaLibrary.createAssetAsync(
+              originalUri
+            );
+            const assetInfo = await MediaLibrary.getAssetInfoAsync(
+              createdAsset
+            );
             const realUri = assetInfo.localUri;
 
             // Get MIME type and extension
             const mimeType = mime.lookup(realUri || originalUri);
-            const ext = mime.extension(mimeType) || 'jpg';
+            const ext = mime.extension(mimeType) || "jpg";
 
             const fileName = `img_${Date.now()}.${ext}`;
             const dest = `${FileSystem.documentDirectory}project_images/${fileName}`;
@@ -104,34 +109,33 @@ export default function CreateProjectModal({
         });
       }
     } catch (err) {
-      console.error('Image picking failed:', err);
+      console.error("Image picking failed:", err);
     }
   };
 
   const insertMultipleImages = async (imageUris, projectId) => {
-  try {
-    const realm = await getRealmInstance();
+    try {
+      const realm = await getRealmInstance();
 
-    realm.write(() => {
-      imageUris.forEach((uri) => {
-        realm.create("Images", {
-          id: uuid.v4(),
-          img_url: uri, // store directly, not JSON.stringify
-          project_id: projectId,
-          created_at: new Date(),
-          updated_at: new Date(),
-          created_by: "admin",
-          updated_by: "admin",
+      realm.write(() => {
+        imageUris.forEach((uri) => {
+          realm.create("Images", {
+            id: uuid.v4(),
+            img_url: uri, // store directly, not JSON.stringify
+            project_id: projectId,
+            created_at: new Date(),
+            updated_at: new Date(),
+            created_by: "admin",
+            updated_by: "admin",
+          });
         });
       });
-    });
 
-    console.log("✅ All images inserted separately into Realm.");
-  } catch (error) {
-    console.error("❌ Failed to insert images:", error);
-  }
-};
-
+      console.log("✅ All images inserted separately into Realm.");
+    } catch (error) {
+      console.error("❌ Failed to insert images:", error);
+    }
+  };
 
   const handleSubmit = async () => {
     if (isSubmitting) return;
@@ -173,14 +177,14 @@ export default function CreateProjectModal({
 
     setIsSubmitting(true);
     const saveImages = new Array();
-    for(var j = 0; j< images.length; j++){
+    for (var j = 0; j < images.length; j++) {
       saveImages.push(images[j]);
     }
     const newProject = {
       id: uuid.v4(),
       name,
       desc,
-      img_url: '',
+      img_url: "",
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
       created_by: "admin",
@@ -195,16 +199,15 @@ export default function CreateProjectModal({
       setImages([]);
       onOpenChange(false);
       router.push({
-        pathname: '/projectView',
+        pathname: "/projectView",
         params: {
           id: newProject.id, // or a unique ID
           name: newProject.name,
           desc: newProject.desc,
           updated: newProject.updated,
           img_url: newProject.img_url,
-        }
-      })
-
+        },
+      });
     } catch (err) {
       console.error("❌ Failed to add project:", err);
     } finally {
