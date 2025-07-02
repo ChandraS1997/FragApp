@@ -1,5 +1,5 @@
 import { ArrowLeft } from "@tamagui/lucide-icons";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { useState } from "react";
 import { Text, View, XStack, YStack } from "tamagui";
 import NewChart from "../../components/common/Charts/newChart";
@@ -45,6 +45,7 @@ const graphView = () => {
   console.log("name : ", name);
   // graphUriArr and projectInfo to pass to the child components
   const [graphUriArr, setGraphUriArr] = useState([]);
+  const router = useRouter();
   const projectInfo = {
     id: id,
     name: name,

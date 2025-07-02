@@ -1,4 +1,5 @@
 import * as FileSystem from "expo-file-system";
+import * as Sharing from 'expo-sharing';
 import { Alert } from "react-native";
 import RNHTMLtoPDF from "react-native-html-to-pdf";
 import { XStack, YStack } from "tamagui";
@@ -86,8 +87,8 @@ const ExportContent = ({ projectInfo, graphUris }) => {
       // );
 
       // share file
-      if (await isAvailableAsync()) {
-        await shareAsync(`file://${file.filePath}`);
+      if (await Sharing.isAvailableAsync()) {
+        await Sharing.shareAsync(`file://${file.filePath}`);
       }
     } catch (err) {
       console.error(err);
